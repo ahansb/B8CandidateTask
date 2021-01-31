@@ -21,13 +21,23 @@ namespace Bit8.StudentSystem.Data
         {
             this.DropDbIfExistsAndRecreate();
             this.CreateTables();
+            this.SeedData();
+        }
 
+        private void SeedData()
+        {
+            this.ExecuteSql("SeedTables.txt");
         }
 
         private void CreateTables()
         {
+            this.ExecuteSql("CreateTables.txt");
+        }
+
+        private void ExecuteSql(string sqlName)
+        {
             var statement = string.Empty;
-            var path = $"{BasePath}CreateTables.txt";
+            var path = $"{BasePath}{sqlName}";
 
             if (File.Exists(path))
             {
