@@ -32,9 +32,10 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // GET api/<DisciplineController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public JsonResult Get(int id)
         {
-            return "value";
+            var result = this.disciplineService.GetById(id);
+            return new JsonResult(result);
         }
 
         // POST api/<DisciplineController>

@@ -1,15 +1,17 @@
 $(document).ready(function () {
     let edittingDisciplineId = getUrlVars()["id"];
 
-    $.get( "ajax/test.html", function( data ) {
-        $( ".result" ).html( data );
-        alert( "Load was performed." );
-      });
+    $.ajax({
+        url: BaseServerUrl + "/discipline/" + edittingDisciplineId,
+        success: (data) => {
+            let header = $("#disciplineHeader");
+            let headerHtml = header.html();
+            header.html(headerHtml + data.id);
 
-
-    $("#idInput").val(edittingDisciplineId);
-    let header = $("#disciplineHeader");
-    let headerHtml = header.html();
-    header.html(headerHtml + edittingDisciplineId);
+            $("#idInput").val(data.id);
+            $("#disciplineNameInput").val(data.disciplineName);
+            $("#professorNameInput").val(data.professorName);
+        }
+    });
 });
 

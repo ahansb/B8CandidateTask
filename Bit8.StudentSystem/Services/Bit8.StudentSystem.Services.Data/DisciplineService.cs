@@ -21,5 +21,11 @@ namespace Bit8.StudentSystem.Services.Data
             var result = this.repository.All();
             return result;
         }
+
+        public Discipline GetById(int id)
+        {
+            var result = this.repository.GetById(id);
+            return result;
+        }
     }
 }

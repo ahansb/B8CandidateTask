@@ -9,5 +9,6 @@ namespace Bit8.StudentSystem.Services.Data.Interfaces
     public interface IDisciplineService
     {
         ICollection<Discipline> GetAll();
+        Discipline GetById(int id);
     }
 }

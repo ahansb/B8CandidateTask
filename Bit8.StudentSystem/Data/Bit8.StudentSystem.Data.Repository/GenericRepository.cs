@@ -43,7 +43,7 @@ namespace Bit8.StudentSystem.Data.Repository
             {
                 Type myType = typeof(T);
                 IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
-                var createdGenericObject = (T)Activator.CreateInstance(myType);
+                var createdGenericObject = (T) Activator.CreateInstance(myType);
 
                 foreach (PropertyInfo property in props)
                 {
@@ -54,6 +54,25 @@ namespace Bit8.StudentSystem.Data.Repository
             }
 
             return result;
+        }
+
+        public T GetById(int id)
+        {
+            var statement = $"SELECT * FROM {this.tableName} WHERE Id = {id};";
+            var reader = this.Context.ExecuteQuery(statement);
+
+            Type myType = typeof(T);
+            var createdGenericObject = (T) Activator.CreateInstance(myType);
+            while (reader.Read())
+            {
+                IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+                foreach (PropertyInfo property in props)
+                {
+                    property.SetValue(createdGenericObject, reader[property.Name]);
+                }
+            }
+
+            return createdGenericObject;
         }
 
         public void Dispose()

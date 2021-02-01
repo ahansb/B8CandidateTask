@@ -7,5 +7,6 @@ namespace Bit8.StudentSystem.Data.Repository.Interfaces
     public interface IGenericRepository<T> : IDisposable where T : class
     {
         ICollection<T> All();
+        T GetById(int id);
     }
 }

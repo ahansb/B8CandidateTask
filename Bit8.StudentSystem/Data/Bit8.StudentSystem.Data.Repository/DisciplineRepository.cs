@@ -22,9 +22,10 @@ namespace Bit8.StudentSystem.Data.Repository
             return result;
         }
 
-        public void GetById(int id)
+        public Discipline GetById(int id)
         {
-
+            var result = this.repository.GetById(id);
+            return result;
         }
 
         public void Add()
