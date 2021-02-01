@@ -27,7 +27,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         public JsonResult Get()
         {
             var result = this.disciplineService.GetAll();
-            return new JsonResult(result);
+            return new JsonResult(new { Data = result });
         }
 
         // GET api/<DisciplineController>/5
