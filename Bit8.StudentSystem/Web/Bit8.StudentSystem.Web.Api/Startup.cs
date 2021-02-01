@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 
 using Bit8.StudentSystem.Data;
 using Bit8.StudentSystem.Data.Interfaces;
+using Bit8.StudentSystem.Data.Repository;
+using Bit8.StudentSystem.Data.Repository.Interfaces;
+using Bit8.StudentSystem.Services.Data;
+using Bit8.StudentSystem.Services.Data.Interfaces;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +36,11 @@ namespace Bit8.StudentSystem.Web.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IApplicationDbContext>(new ApplicationDbContext(this.Configuration.GetConnectionString(ApplicationDbContextName)));
-           
+
+            services.AddScoped<IDisciplineRepository, DisciplineRepository>();
+
+            services.AddScoped<IDisciplineService, DisciplineService>();
+
             services.AddControllers();
           
         }

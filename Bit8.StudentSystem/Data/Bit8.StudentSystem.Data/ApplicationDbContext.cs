@@ -17,11 +17,32 @@ namespace Bit8.StudentSystem.Data
             this.connectionString = connectionString;
         }
 
+        private MySqlConnection Connection { get; set; }
+
         public void Initialize()
         {
             this.DropDbIfExistsAndRecreate();
             this.CreateTables();
             this.SeedData();
+        }
+
+        public void OpenConnection()
+        {
+            this.Connection = new MySqlConnection(this.connectionString);
+            this.Connection.Open();
+        }
+
+        public MySqlDataReader ExecuteQuery(string statement)
+        {
+            var command = new MySqlCommand(statement, this.Connection);
+            var dataReader = command.ExecuteReader();
+
+            return dataReader;
+        }
+
+        public void CloseConnection()
+        {
+            this.Connection.Close();
         }
 
         private void SeedData()

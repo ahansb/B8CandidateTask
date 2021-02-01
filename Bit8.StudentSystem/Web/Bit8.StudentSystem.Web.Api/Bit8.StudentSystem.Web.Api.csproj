@@ -5,7 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Data\Bit8.StudentSystem.Data.Repository\Bit8.StudentSystem.Data.Repository.csproj" />
     <ProjectReference Include="..\..\Data\Bit8.StudentSystem.Data\Bit8.StudentSystem.Data.csproj" />
+    <ProjectReference Include="..\..\Services\Bit8.StudentSystem.Services.Data\Bit8.StudentSystem.Services.Data.csproj" />
   </ItemGroup>
 
 

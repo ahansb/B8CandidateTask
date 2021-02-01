@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\Bit8.StudentSystem.Data.Models\Bit8.StudentSystem.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\Bit8.StudentSystem.Data.Repository\Bit8.StudentSystem.Data.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
