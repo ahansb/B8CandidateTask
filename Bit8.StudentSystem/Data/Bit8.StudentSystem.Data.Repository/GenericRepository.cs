@@ -22,6 +22,7 @@ namespace Bit8.StudentSystem.Data.Repository
 
             this.context = dbContext;
             this.tableName = tableName;
+            this.Context.OpenConnection();
         }
 
         public IApplicationDbContext Context
@@ -34,7 +35,6 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public ICollection<T> All()
         {
-            this.Context.OpenConnection();
             var statement = $"SELECT * FROM {this.tableName};";
             var reader = this.Context.ExecuteQuery(statement);
             ICollection<T> result = new List<T>();
