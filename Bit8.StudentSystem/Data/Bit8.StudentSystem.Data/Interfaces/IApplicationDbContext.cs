@@ -12,5 +12,6 @@ namespace Bit8.StudentSystem.Data.Interfaces
         void OpenConnection();
         void CloseConnection();
         MySqlDataReader ExecuteQuery(string statement);
+        int ExecuteNonQuery(string statement, ICollection<MySqlParameter> parameters);
     }
 }

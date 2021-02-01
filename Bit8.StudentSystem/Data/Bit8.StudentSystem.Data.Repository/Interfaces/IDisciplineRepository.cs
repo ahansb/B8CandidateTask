@@ -10,5 +10,6 @@ namespace Bit8.StudentSystem.Data.Repository.Interfaces
     {
         ICollection<Discipline> All();
         Discipline GetById(int id);
+        int Update(int id, string professorName);
     }
 }

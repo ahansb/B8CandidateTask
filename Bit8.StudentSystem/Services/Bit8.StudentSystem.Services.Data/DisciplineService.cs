@@ -28,9 +28,10 @@ namespace Bit8.StudentSystem.Services.Data
             return result;
         }
 
-        public void Edit(int id, string professorName)
+        public int Edit(int id, string professorName)
         {
-            //this.GetById();
+            var affectedRows = this.repository.Update(id, professorName);
+            return affectedRows;
         }
     }
 }

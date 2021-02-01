@@ -1,3 +1,17 @@
-#navigationBar{
+#navigationBar {
     margin-bottom: 20px;
+}
+
+.addButton {
+    background: limegreen;
+    margin: 20px;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.hint{
+    color: darkgrey;
+    margin-bottom: 10px;
 }

@@ -25,7 +25,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // GET: api/<DisciplineController>
         [HttpGet]
-        public JsonResult Get()
+        public IActionResult Get()
         {
             var result = this.disciplineService.GetAll();
             return new JsonResult(new { Data = result });
@@ -33,7 +33,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // GET api/<DisciplineController>/5
         [HttpGet("{id}")]
-        public JsonResult Get(int id)
+        public IActionResult Get(int id)
         {
             var result = this.disciplineService.GetById(id);
             return new JsonResult(result);
@@ -47,9 +47,15 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // PUT api/<DisciplineController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] DisciplineEditModel model)
+        public IActionResult Put(int id, [FromBody] DisciplineEditModel model)
         {
+            if (id <= 0 || model == null || string.IsNullOrWhiteSpace(model.ProfessorName))
+            {
+                return BadRequest(new { message = "Bad parameters passed!" });
+            }
 
+            this.disciplineService.Edit(id, model.ProfessorName);
+            return Ok(new { message = "Successfully updated." });
         }
 
         // DELETE api/<DisciplineController>/5

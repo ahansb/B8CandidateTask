@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 using Bit8.StudentSystem.Data.Interfaces;
@@ -38,6 +39,18 @@ namespace Bit8.StudentSystem.Data
             var dataReader = command.ExecuteReader();
 
             return dataReader;
+        }
+
+        public int ExecuteNonQuery(string statement, ICollection<MySqlParameter> parameters)
+        {
+            var command = new MySqlCommand(statement, this.Connection);
+            foreach (var parameter in parameters)
+            {
+                command.Parameters.Add(parameter);
+            }
+            
+            var affectedRows = command.ExecuteNonQuery();
+            return affectedRows;
         }
 
         public void CloseConnection()

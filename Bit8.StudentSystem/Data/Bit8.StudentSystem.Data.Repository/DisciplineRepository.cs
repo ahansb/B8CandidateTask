@@ -12,7 +12,7 @@ namespace Bit8.StudentSystem.Data.Repository
     public class DisciplineRepository : BaseRepository, IDisciplineRepository
     {
         private const string DisciplineTableName = "bit8studentsystem.discipline";
-     
+
         public DisciplineRepository(IApplicationDbContext dbContext) : base(dbContext)
         {
         }
@@ -51,9 +51,17 @@ namespace Bit8.StudentSystem.Data.Repository
 
         }
 
-        public void Update()
+        public int Update(int id, string professorName)
         {
+            var statement = $"UPDATE {DisciplineTableName} SET ProfessorName = @param_1 WHERE Id = {id}";
+            var parameters = new List<MySqlParameter>()
+            {
+                new MySqlParameter("param_1",professorName)
+            };
 
+            var affectedRows = this.Context.ExecuteNonQuery(statement, parameters);
+
+            return affectedRows;
         }
 
         public void Delete()

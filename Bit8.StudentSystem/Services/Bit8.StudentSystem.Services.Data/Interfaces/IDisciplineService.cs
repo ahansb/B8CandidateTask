@@ -10,5 +10,6 @@ namespace Bit8.StudentSystem.Services.Data.Interfaces
     {
         ICollection<Discipline> GetAll();
         Discipline GetById(int id);
+        int Edit(int id, string professorName);
     }
 }
