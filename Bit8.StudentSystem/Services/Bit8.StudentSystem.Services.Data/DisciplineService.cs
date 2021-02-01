@@ -27,5 +27,10 @@ namespace Bit8.StudentSystem.Services.Data
             var result = this.repository.GetById(id);
             return result;
         }
+
+        public void Edit(int id, string professorName)
+        {
+            //this.GetById();
+        }
     }
 }

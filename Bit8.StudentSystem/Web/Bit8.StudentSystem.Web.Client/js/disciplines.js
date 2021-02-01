@@ -7,7 +7,8 @@ $(document).ready(function () {
         columns: [
             { data: 'id', name: 'Id', title: 'Id' },
             { data: 'disciplineName', name: 'Discipline name', title: 'Discipline name' },
-            { data: 'professorName', name: 'Professor name', title: 'Professor name' }
+            { data: 'professorName', name: 'Professor name', title: 'Professor name' },
+            { data: 'semesterId', name: 'Semester Id', title: 'Semester Id' }
         ]
     });
 

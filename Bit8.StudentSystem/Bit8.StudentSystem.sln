@@ -9,15 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit8.StudentSystem.Web.Api", "Web\Bit8.StudentSystem.Web.Api\Bit8.StudentSystem.Web.Api.csproj", "{5DD163FB-1DA7-4068-9EF1-DEDB06E2BC37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bit8.StudentSystem.Web.Api", "Web\Bit8.StudentSystem.Web.Api\Bit8.StudentSystem.Web.Api.csproj", "{5DD163FB-1DA7-4068-9EF1-DEDB06E2BC37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit8.StudentSystem.Services.Data", "Services\Bit8.StudentSystem.Services.Data\Bit8.StudentSystem.Services.Data.csproj", "{CB8CF848-F60C-4199-AE0C-EB7CAFD05D1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bit8.StudentSystem.Services.Data", "Services\Bit8.StudentSystem.Services.Data\Bit8.StudentSystem.Services.Data.csproj", "{CB8CF848-F60C-4199-AE0C-EB7CAFD05D1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit8.StudentSystem.Data", "Data\Bit8.StudentSystem.Data\Bit8.StudentSystem.Data.csproj", "{CA96B191-32DD-44D8-880F-D774B66537FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bit8.StudentSystem.Data", "Data\Bit8.StudentSystem.Data\Bit8.StudentSystem.Data.csproj", "{CA96B191-32DD-44D8-880F-D774B66537FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit8.StudentSystem.Data.Repository", "Data\Bit8.StudentSystem.Data.Repository\Bit8.StudentSystem.Data.Repository.csproj", "{02340633-D8B7-4B50-9BA0-2398C99B3951}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bit8.StudentSystem.Data.Repository", "Data\Bit8.StudentSystem.Data.Repository\Bit8.StudentSystem.Data.Repository.csproj", "{02340633-D8B7-4B50-9BA0-2398C99B3951}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit8.StudentSystem.Data.Models", "Data\Bit8.StudentSystem.Data.Models\Bit8.StudentSystem.Data.Models.csproj", "{AA005A05-F18D-48C4-A6B9-364C704ADA2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bit8.StudentSystem.Data.Models", "Data\Bit8.StudentSystem.Data.Models\Bit8.StudentSystem.Data.Models.csproj", "{AA005A05-F18D-48C4-A6B9-364C704ADA2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit8.StudentSystem.Data.TransferModels", "Data\Bit8.StudentSystem.Data.TransferModels\Bit8.StudentSystem.Data.TransferModels.csproj", "{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{AA005A05-F18D-48C4-A6B9-364C704ADA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA005A05-F18D-48C4-A6B9-364C704ADA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA005A05-F18D-48C4-A6B9-364C704ADA2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{CA96B191-32DD-44D8-880F-D774B66537FA} = {5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}
 		{02340633-D8B7-4B50-9BA0-2398C99B3951} = {5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}
 		{AA005A05-F18D-48C4-A6B9-364C704ADA2E} = {5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}
+		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694} = {5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1DF6F55-5DE0-43FC-8776-4E8310DF6A60}

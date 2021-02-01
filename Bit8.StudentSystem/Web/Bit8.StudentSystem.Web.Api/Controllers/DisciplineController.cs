@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Bit8.StudentSystem.Data.TransferModels;
 using Bit8.StudentSystem.Services.Data.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +47,9 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // PUT api/<DisciplineController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] DisciplineEditModel model)
         {
+
         }
 
         // DELETE api/<DisciplineController>/5
