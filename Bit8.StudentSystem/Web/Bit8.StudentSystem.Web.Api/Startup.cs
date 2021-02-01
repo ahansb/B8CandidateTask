@@ -41,6 +41,7 @@ namespace Bit8.StudentSystem.Web.Api
 
             services.AddScoped<IDisciplineService, DisciplineService>();
 
+            services.AddCors();
             services.AddControllers();
           
         }
@@ -58,6 +59,13 @@ namespace Bit8.StudentSystem.Web.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseAuthorization();
 
