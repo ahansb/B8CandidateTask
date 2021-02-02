@@ -10,5 +10,6 @@ namespace Bit8.StudentSystem.Data.Models
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public ICollection<Discipline> Disciplines { get; set; }
     }
 }

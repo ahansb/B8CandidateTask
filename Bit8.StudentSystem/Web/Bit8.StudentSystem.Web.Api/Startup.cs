@@ -38,8 +38,10 @@ namespace Bit8.StudentSystem.Web.Api
             services.AddSingleton<IApplicationDbContext>(new ApplicationDbContext(this.Configuration.GetConnectionString(ApplicationDbContextName)));
 
             services.AddScoped<IDisciplineRepository, DisciplineRepository>();
+            services.AddScoped<ISemesterRepository, SemesterRepository>();
 
             services.AddScoped<IDisciplineService, DisciplineService>();
+            services.AddScoped<ISemesterService, SemesterService>();
 
             services.AddCors();
             services.AddControllers();

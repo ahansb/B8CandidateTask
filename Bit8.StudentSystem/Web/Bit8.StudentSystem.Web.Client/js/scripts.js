@@ -19,3 +19,10 @@ $("#disciplinesButton").on("click", () => {
 $("#semestersButton").on("click", () => {
     window.location.href = BaseUrl + "/semesters.html";
 });
+
+function renderDate(data) {
+    let startDate = new Date(data);
+    let month = (startDate.getMonth() + 1) < 10 ? "0" + (startDate.getMonth() + 1) : (startDate.getMonth() + 1);
+    let day = startDate.getDate() < 10 ? "0" + startDate.getDate() : startDate.getDate();
+    return startDate.getFullYear() + "-" + month + "-" + day;
+}

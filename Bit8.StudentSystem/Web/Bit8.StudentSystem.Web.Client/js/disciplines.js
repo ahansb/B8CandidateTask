@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    let myTable = $('#table_id').DataTable({
+    let myTable = $('#tableId').DataTable({
         ajax: {
             url: BaseServerUrl + '/discipline',
             dataSource: 'data'
@@ -12,7 +12,7 @@ $(document).ready(function () {
         ]
     });
 
-    $('#table_id').on('dblclick', 'tbody tr', function () {
+    $('#tableId').on('dblclick', 'tbody tr', function () {
         let link = BaseUrl + '/discipline.html?id=' + myTable.row(this).data().id;
         window.location.href = link;
     });
