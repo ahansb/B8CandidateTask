@@ -4,6 +4,7 @@ using System.Text;
 
 using Bit8.StudentSystem.Data.Models;
 using Bit8.StudentSystem.Data.Repository.Interfaces;
+using Bit8.StudentSystem.Data.TransferModels;
 using Bit8.StudentSystem.Services.Data.Interfaces;
 
 namespace Bit8.StudentSystem.Services.Data
@@ -21,6 +22,32 @@ namespace Bit8.StudentSystem.Services.Data
         {
             var result = this.repository.All();
             return result;
+        }
+
+        public int Create(SemesterCreateModel model)
+        {
+            var semester = new Semester()
+            {
+                Name = model.Name,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate,
+                Disciplines = new List<Discipline>()
+            };
+
+            foreach (var disciplineModel in model.Disciplines)
+            {
+                var discipline = new Discipline()
+                {
+                    DisciplineName = disciplineModel.DisciplineName,
+                    ProfessorName = disciplineModel.ProfessorName
+                };
+
+                semester.Disciplines.Add(discipline);
+            }
+
+            var affectedRows = this.repository.Add(semester);
+
+            return affectedRows;
         }
     }
 }

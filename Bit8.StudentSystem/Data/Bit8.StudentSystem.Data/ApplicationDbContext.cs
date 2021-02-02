@@ -33,22 +33,32 @@ namespace Bit8.StudentSystem.Data
             this.Connection.Open();
         }
 
-        public MySqlDataReader ExecuteQuery(string statement)
+        public MySqlDataReader ExecuteQuery(string statement, ICollection<MySqlParameter> parameters = null)
         {
             var command = new MySqlCommand(statement, this.Connection);
+            if (parameters != null)
+            {
+                foreach (var parameter in parameters)
+                {
+                    command.Parameters.Add(parameter);
+                }
+            }
+
             var dataReader = command.ExecuteReader();
 
             return dataReader;
         }
 
-        public int ExecuteNonQuery(string statement, ICollection<MySqlParameter> parameters)
+        public int ExecuteNonQuery(string statement, ICollection<MySqlParameter> parameters = null)
         {
             var command = new MySqlCommand(statement, this.Connection);
-            foreach (var parameter in parameters)
+            if (parameters != null)
             {
-                command.Parameters.Add(parameter);
+                foreach (var parameter in parameters)
+                {
+                    command.Parameters.Add(parameter);
+                }
             }
-            
             var affectedRows = command.ExecuteNonQuery();
             return affectedRows;
         }

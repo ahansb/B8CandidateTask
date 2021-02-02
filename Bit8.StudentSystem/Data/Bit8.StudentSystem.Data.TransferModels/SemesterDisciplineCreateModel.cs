@@ -1,15 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Bit8.StudentSystem.Data.TransferModels
 {
-    public class DisciplineWithSemester
+    public class SemesterDisciplineCreateModel
     {
-        public int Id { get; set; }
-
         public string DisciplineName { get; set; }
 
         public string ProfessorName { get; set; }
-
-        public DisciplinesSemester Semester { get; set; }
     }
 }

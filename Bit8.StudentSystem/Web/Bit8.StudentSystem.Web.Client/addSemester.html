@@ -21,21 +21,31 @@
         <button id="disciplinesButton">Disciplines</button>
         <button id="semestersButton">Semesters</button>
     </div>
-    <h3>You are adding a discipline</h3>
+    <h3>You are adding a semester</h3>
+    <form id="semesterForm">
+        <label for="nameInput" >Name: </label>
+        <input id="nameInput" type="text" required>
+        <label for="startDateInput">Start Date: </label>
+        <input id="startDateInput" type="date" required>
+        <label for="endDateInput">End Date: </label>
+        <input id="endDateInput" type="date" required>
+        <input id="saveEdittedDiscipline" type="submit" value="Save">
+    </form>
+    <br>
     <form id="disciplineForm">
         <label for="disciplineNameInput" >Discipline name: </label>
         <input id="disciplineNameInput" type="text" required>
         <label for="professorNameInput">Professor name: </label>
         <input id="professorNameInput" type="text" required>
-        <label for="semesterIdInput">Semester Id: </label>
-        <input id="semesterIdInput" type="number" required>
-        <input id="saveCreatedDiscipline" type="submit" value="Save">
+        <input id="addDiscipline" type="submit" value="Add discipline to semester">
     </form>
-
+    <ul id="createdDisciplinesForSemester">
+        
+    </ul>
   
     
     <script src="js/scripts.js"></script>
-    <script src="js/addDiscipline.js"></script>
+    <script src="js/addSemester.js"></script>
 </body>
 
 </html>

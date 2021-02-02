@@ -17,8 +17,11 @@ $(document).ready(function () {
             },
             error: (errMsg) => {
                 debugger;
-                alert("Status Code " + errMsg.status + " " + errMsg.responseJSON.message);
-            }
+                let message = "";
+                if (errMsg.responseJSON != undefined) {
+                    message = errMsg.responseJSON.message;
+                }
+                alert("Status Code " + errMsg.status + " " + message);            }
         });
     });
 });

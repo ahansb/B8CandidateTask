@@ -30,7 +30,11 @@ $(document).ready(function () {
                     window.location.href = BaseUrl + "/disciplines.html";
                 },
                 error: (errMsg) => {
-                    alert("Status Code " + errMsg.status + " " + errMsg.responseJSON.message);
+                    let message = "";
+                    if (errMsg.responseJSON != undefined) {
+                        message = errMsg.responseJSON.message;
+                    }
+                    alert("Status Code " + errMsg.status + " " + message);
                 }
             });
         } else {

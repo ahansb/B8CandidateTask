@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Bit8.StudentSystem.Data.TransferModels;
 using Bit8.StudentSystem.Services.Data.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +40,23 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // POST api/<SemesterController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] SemesterCreateModel model)
         {
+            if (model == null || string.IsNullOrWhiteSpace(model.Name) || !this.CheckDate( model.StartDate.ToString() ) || !this.CheckDate(model.EndDate.ToString()))
+            {
+                return BadRequest(new { message = "Bad parameters passed!" });
+            }
+
+            foreach (var discipline in model.Disciplines)
+            {
+                if (discipline == null || string.IsNullOrWhiteSpace(discipline.DisciplineName) || string.IsNullOrWhiteSpace(discipline.ProfessorName))
+                {
+                    return BadRequest(new { message = "Bad discipline parameters passed!" });
+                }
+            }
+            
+            this.semesterService.Create(model);
+            return Ok(new { message = "Successfully updated." });
         }
 
         // PUT api/<SemesterController>/5
@@ -53,6 +69,19 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+
+        private bool CheckDate(String date)
+        {
+            try
+            {
+                DateTime dt = DateTime.Parse(date);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

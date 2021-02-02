@@ -9,5 +9,6 @@ namespace Bit8.StudentSystem.Data.Repository.Interfaces
     public interface ISemesterRepository
     {
         ICollection<Semester> All();
+        int Add(Semester semester);
     }
 }

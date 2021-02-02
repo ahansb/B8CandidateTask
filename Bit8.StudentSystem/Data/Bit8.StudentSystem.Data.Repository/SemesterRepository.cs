@@ -38,7 +38,7 @@ namespace Bit8.StudentSystem.Data.Repository
 
                 var disciplineReader = this.Context.ExecuteQuery(disciplineStatement);
 
-                ICollection<Discipline> disciplines = new List<Discipline>();
+                List<Discipline> disciplines = new List<Discipline>();
                 while (disciplineReader.Read())
                 {
                     var discipline = this.MapReaderToDiscipline(disciplineReader);
@@ -49,6 +49,49 @@ namespace Bit8.StudentSystem.Data.Repository
             }
 
             return semesters;
+        }
+
+        public int Add(Semester semester)
+        {
+            var statement = $"INSERT INTO {SemesterTableName}(`Name`,`StartDate`,`EndDate`)VALUES(@Name,@StartDate,@EndDate);SELECT Id FROM {SemesterTableName} WHERE Id = LAST_INSERT_ID();";
+            var parameters = new List<MySqlParameter>()
+            {
+                new MySqlParameter("Name",semester.Name),
+                new MySqlParameter("StartDate",semester.StartDate),
+                new MySqlParameter("EndDate",semester.EndDate)
+            };
+
+            var reader = this.Context.ExecuteQuery(statement, parameters);
+            int idOfSemester = 0;
+            while (reader.Read())
+            {
+                idOfSemester = (int) reader["Id"];
+            }
+
+            var disciplineStatement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ";
+            var disciplineParameters = new List<MySqlParameter>();
+            for (int i = 0; i < semester.Disciplines.Count; i++)
+            {
+                var disciplineForAdd = $"(@DisciplineName{i}, @ProfessorName{i}, @SemesterId{i})";
+                disciplineParameters.Add(new MySqlParameter($"DisciplineName{i}", semester.Disciplines[i].DisciplineName));
+                disciplineParameters.Add(new MySqlParameter($"ProfessorName{i}", semester.Disciplines[i].ProfessorName));
+                disciplineParameters.Add(new MySqlParameter($"SemesterId{i}", idOfSemester));
+
+                disciplineStatement = $"{disciplineStatement}{disciplineForAdd}";
+                if (i == semester.Disciplines.Count-1)
+                {
+                    disciplineStatement = $"{disciplineStatement};";
+                }
+                else
+                {
+                    disciplineStatement = $"{disciplineStatement},";
+                }
+            }
+
+            this.Context.CloseConnection();
+            this.Context.OpenConnection();
+            var affectedRows = this.Context.ExecuteNonQuery(disciplineStatement, disciplineParameters);
+            return affectedRows + 1;
         }
 
         private Semester MapReaderToSemester(MySqlDataReader reader)
