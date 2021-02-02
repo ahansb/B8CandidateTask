@@ -16,4 +16,8 @@ $(document).ready(function () {
         let link = BaseUrl + '/discipline.html?id=' + myTable.row(this).data().id;
         window.location.href = link;
     });
+
+    $('#disciplineAddButton').on('click', ()=>{
+        window.location.href = BaseUrl + '/addDiscipline.html';
+    });
 });

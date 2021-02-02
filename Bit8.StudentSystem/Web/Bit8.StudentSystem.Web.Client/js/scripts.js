@@ -15,3 +15,7 @@ function getUrlVars() {
 $("#disciplinesButton").on("click", () => {
     window.location.href = BaseUrl + "/disciplines.html";
 });
+
+$("#semestersButton").on("click", () => {
+    window.location.href = BaseUrl + "/semesters.html";
+});

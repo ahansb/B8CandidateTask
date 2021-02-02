@@ -41,8 +41,15 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // POST api/<DisciplineController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] DisciplineCreateModel model)
         {
+            if (model == null || string.IsNullOrWhiteSpace(model.DisciplineName) || string.IsNullOrWhiteSpace(model.ProfessorName) || model.SemesterId <= 0)
+            {
+                return BadRequest(new { message = "Bad parameters passed!" });
+            }
+
+            this.disciplineService.Create(model);
+            return Ok(new { message = "Successfully updated." });
         }
 
         // PUT api/<DisciplineController>/5

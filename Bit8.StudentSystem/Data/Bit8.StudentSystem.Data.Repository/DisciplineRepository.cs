@@ -46,17 +46,27 @@ namespace Bit8.StudentSystem.Data.Repository
             return discipline;
         }
 
-        public void Add()
+        public int Add(Discipline discipline)
         {
+            var statement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES (@DisciplineName, @ProfessorName, @SemesterId);";
+            var parameters = new List<MySqlParameter>()
+            {
+                new MySqlParameter("DisciplineName",discipline.DisciplineName),
+                new MySqlParameter("ProfessorName",discipline.ProfessorName),
+                new MySqlParameter("SemesterId",discipline.SemesterId)
+            };
 
+            var affectedRows = this.Context.ExecuteNonQuery(statement, parameters);
+
+            return affectedRows;
         }
 
         public int Update(int id, string professorName)
         {
-            var statement = $"UPDATE {DisciplineTableName} SET ProfessorName = @param_1 WHERE Id = {id}";
+            var statement = $"UPDATE {DisciplineTableName} SET ProfessorName = @ProfessorName WHERE Id = {id}";
             var parameters = new List<MySqlParameter>()
             {
-                new MySqlParameter("param_1",professorName)
+                new MySqlParameter("ProfessorName",professorName)
             };
 
             var affectedRows = this.Context.ExecuteNonQuery(statement, parameters);

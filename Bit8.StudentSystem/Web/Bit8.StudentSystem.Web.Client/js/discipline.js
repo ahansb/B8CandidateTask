@@ -16,13 +16,13 @@ $(document).ready(function () {
         }
     });
 
-    $("#saveEdittedDiscipline").on("click", () => {
+    editDisciplineForm.addEventListener("submit", (event) => {
+        event.preventDefault();
         let professorName = $("#professorNameInput").val();
         if (professorName != originalObject.professorName) {
             $.ajax({
                 type: "PUT",
                 url: BaseServerUrl + "/discipline/" + originalObject.id,
-                // The key needs to match your method's input parameter (case-sensitive).
                 data: JSON.stringify({ professorName }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
