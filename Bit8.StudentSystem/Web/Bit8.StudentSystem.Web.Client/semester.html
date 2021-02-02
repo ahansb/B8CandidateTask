@@ -33,7 +33,14 @@
         <input id="endDateInput" type="date" readonly>
         <input id="saveEdittedDiscipline" type="submit" value="Save">
     </form>
-    <div>Disciplines</div>
+    <div class="margin-top margin-bottom">Disciplines</div>
+    <form id="disciplineForm">
+        <label for="disciplineNameInput" >Discipline name: </label>
+        <input id="disciplineNameInput" type="text" required>
+        <label for="professorNameInput">Professor name: </label>
+        <input id="professorNameInput" type="text" required>
+        <input id="saveCreatedDiscipline" type="submit" value="Add">
+    </form>
     <ul id="disciplinesList">
     </ul>
     <script src="js/scripts.js"></script>
