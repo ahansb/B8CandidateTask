@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Bit8 Student System</title>
+    <meta name="description" content="Bit8 Student System">
+    <meta name="author" content="Andrej Boyadjiev">
+
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link rel="stylesheet" href="node_modules/datatables.net-dt/css/jquery.dataTables.css">
+
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/datatables.net/js/jquery.dataTables.js"></script>
+</head>
+
+<body>
+    <div id="navigationBar">
+        <button id="disciplinesButton">Disciplines</button>
+        <button id="semestersButton">Semesters</button>
+    </div>
+    <h3>You are adding a discipline</h3>
+    <form id="disciplineForm">
+        <label for="disciplineNameInput" >Discipline name: </label>
+        <input id="disciplineNameInput" type="text" required>
+        <label for="professorNameInput">Professor name: </label>
+        <input id="professorNameInput" type="text" required>
+        <label for="semesterIdInput">Semester Id: </label>
+        <input id="semesterIdInput" type="number" required>
+        <input id="saveEdittedDiscipline" type="submit" value="Save">
+    </form>
+
+  
+    
+    <script src="js/scripts.js"></script>
+    <script src="js/addDiscipline.js"></script>
+</body>
+
+</html>
