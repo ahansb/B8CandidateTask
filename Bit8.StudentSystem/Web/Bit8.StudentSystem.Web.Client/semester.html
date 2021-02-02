@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Bit8 Student System</title>
+    <meta name="description" content="Bit8 Student System">
+    <meta name="author" content="Andrej Boyadjiev">
+
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link rel="stylesheet" href="node_modules/datatables.net-dt/css/jquery.dataTables.css">
+
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/datatables.net/js/jquery.dataTables.js"></script>
+</head>
+
+<body>
+    <div id="navigationBar">
+        <button id="disciplinesButton">Disciplines</button>
+        <button id="semestersButton">Semesters</button>
+    </div>
+    <h3 id="disciplineHeader">You are editting semester with id </h3>
+    <form id="editSemesterForm">
+        <label for="idInput">Id: </label>
+        <input id="idInput" type="number" readonly>
+        <label for="nameInput">Name: </label>
+        <input id="nameInput" type="text" readonly>
+        <label for="startDateInput">Start Date: </label>
+        <input id="startDateInput" type="date" required>
+        <label for="endDateInput">startDateInput: </label>
+        <input id="endDateInput" type="date" readonly>
+        <input id="saveEdittedDiscipline" type="submit" value="Save">
+    </form>
+    <div>Disciplines</div>
+    <ul id="disciplinesList">
+    </ul>
+    <script src="js/scripts.js"></script>
+    <script src="js/semester.js"></script>
+</body>
+
+</html>

@@ -11,5 +11,6 @@ namespace Bit8.StudentSystem.Services.Data.Interfaces
     {
         ICollection<Semester> GetAll();
         int Create(SemesterCreateModel model);
+        Semester GetById(int id);
     }
 }

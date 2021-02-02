@@ -24,6 +24,12 @@ namespace Bit8.StudentSystem.Services.Data
             return result;
         }
 
+        public Semester GetById(int id)
+        {
+            var result = this.repository.GetById(id);
+            return result;
+        }
+
         public int Create(SemesterCreateModel model)
         {
             var semester = new Semester()

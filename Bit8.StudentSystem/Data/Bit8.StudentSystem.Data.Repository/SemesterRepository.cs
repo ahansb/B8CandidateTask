@@ -51,6 +51,34 @@ namespace Bit8.StudentSystem.Data.Repository
             return semesters;
         }
 
+        public Semester GetById(int id)
+        {
+            var statement = $"SELECT * FROM {SemesterTableName} WHERE Id = {id};";
+            var reader = this.Context.ExecuteQuery(statement);
+
+            Semester semester = new Semester();
+            while (reader.Read())
+            {
+                semester = this.MapReaderToSemester(reader);
+            }
+
+            var disciplineStatement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
+            this.Context.CloseConnection();
+            this.Context.OpenConnection();
+
+            var disciplineReader = this.Context.ExecuteQuery(disciplineStatement);
+
+            List<Discipline> disciplines = new List<Discipline>();
+            while (disciplineReader.Read())
+            {
+                var discipline = this.MapReaderToDiscipline(disciplineReader);
+                disciplines.Add(discipline);
+            }
+
+            semester.Disciplines = disciplines;
+            return semester;
+        }
+
         public int Add(Semester semester)
         {
             var statement = $"INSERT INTO {SemesterTableName}(`Name`,`StartDate`,`EndDate`)VALUES(@Name,@StartDate,@EndDate);SELECT Id FROM {SemesterTableName} WHERE Id = LAST_INSERT_ID();";
@@ -78,7 +106,7 @@ namespace Bit8.StudentSystem.Data.Repository
                 disciplineParameters.Add(new MySqlParameter($"SemesterId{i}", idOfSemester));
 
                 disciplineStatement = $"{disciplineStatement}{disciplineForAdd}";
-                if (i == semester.Disciplines.Count-1)
+                if (i == semester.Disciplines.Count - 1)
                 {
                     disciplineStatement = $"{disciplineStatement};";
                 }

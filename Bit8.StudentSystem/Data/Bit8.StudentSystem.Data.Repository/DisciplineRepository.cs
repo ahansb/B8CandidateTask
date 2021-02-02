@@ -74,9 +74,12 @@ namespace Bit8.StudentSystem.Data.Repository
             return affectedRows;
         }
 
-        public void Delete()
+        public int Delete(int id)
         {
+            var statement = $"DELETE FROM {DisciplineTableName} WHERE Id={id};";
+            var affectedRows = this.Context.ExecuteNonQuery(statement);
 
+            return affectedRows;
         }
 
         private Discipline MapReaderToDiscipline(MySqlDataReader reader)

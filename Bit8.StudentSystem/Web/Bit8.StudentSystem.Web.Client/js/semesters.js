@@ -25,6 +25,8 @@ $(document).ready(function () {
             },
             {
                 data: "disciplines",
+                name: 'Disciplines', 
+                title: 'Disciplines', 
                 render: function (data, type, row) {
                     let result = "";
                     data.forEach(discipline => {
@@ -37,10 +39,10 @@ $(document).ready(function () {
         ]
     });
 
-    // $('#tableId').on('dblclick', 'tbody tr', function () {
-    //     let link = BaseUrl + '/discipline.html?id=' + myTable.row(this).data().id;
-    //     window.location.href = link;
-    // });
+    $('#tableId').on('dblclick', 'tbody tr', function () {
+        let link = BaseUrl + '/semester.html?id=' + myTable.row(this).data().id;
+        window.location.href = link;
+    });
 
     $('#semesterAddButton').on('click', ()=>{
         window.location.href = BaseUrl + '/addSemester.html';

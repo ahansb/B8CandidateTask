@@ -67,8 +67,21 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // DELETE api/<DisciplineController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (id<1)
+            {
+                return BadRequest(new { message = "Bad parameters passed!" });
+            }
+
+            if (this.disciplineService.Delete(id))
+            {
+                return Ok(new { message = "Successfully deleted." });
+            }
+            else
+            {
+                return BadRequest(new { message = "Unsuccessful delete!" });
+            }
         }
     }
 }
