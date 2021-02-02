@@ -12,8 +12,8 @@ $(document).ready(function () {
 
             $("#idInput").val(data.id);
             $("#nameInput").val(data.name);
-            $("#startDateInput").val(data.startDate);
-            $("#endDateInput").val(data.endDate);
+            $("#startDateInput").val(renderDate( data.startDate));
+            $("#endDateInput").val(renderDate(data.endDate));
 
             let disciplinesList = $("#disciplinesList");
             data.disciplines.forEach(discipline => {
