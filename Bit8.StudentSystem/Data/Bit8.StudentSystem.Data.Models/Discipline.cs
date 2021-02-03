@@ -12,6 +12,8 @@ namespace Bit8.StudentSystem.Data.Models
 
         public int SemesterId { get; set; }
 
+        public Semester Semester { get; set; }
+
         public int? Score { get; set; }
     }
 }

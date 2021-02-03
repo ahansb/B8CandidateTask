@@ -8,7 +8,18 @@ $(document).ready(function () {
             { data: 'id', name: 'Id', title: 'Id' },
             { data: 'disciplineName', name: 'Discipline name', title: 'Discipline name' },
             { data: 'professorName', name: 'Professor name', title: 'Professor name' },
-            { data: 'semesterId', name: 'Semester Id', title: 'Semester Id' }
+            {
+                data: 'semester',
+                name: 'Semester',
+                title: 'Semester',
+                render: function (semester, type, row) {
+                    let result = "";
+                    result += semester.id + " " + semester.name + " " + renderDate(semester.startDate) + "/" + renderDate(semester.endDate);
+                    result += "<br>";
+
+                    return result;
+                }
+            }
         ]
     });
 
@@ -17,7 +28,7 @@ $(document).ready(function () {
         window.location.href = link;
     });
 
-    $('#disciplineAddButton').on('click', ()=>{
+    $('#disciplineAddButton').on('click', () => {
         window.location.href = BaseUrl + '/addDiscipline.html';
     });
 });

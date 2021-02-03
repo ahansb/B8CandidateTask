@@ -12,6 +12,7 @@ namespace Bit8.StudentSystem.Data.Repository
     public class DisciplineRepository : BaseRepository, IDisciplineRepository
     {
         private const string DisciplineTableName = "bit8studentsystem.discipline";
+        private const string SemesterTableName = "bit8studentsystem.semester";
 
         public DisciplineRepository(IApplicationDbContext dbContext) : base(dbContext)
         {
@@ -19,13 +20,14 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public ICollection<Discipline> All()
         {
-            var statement = $"SELECT * FROM {DisciplineTableName};";
+            var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {DisciplineTableName} d LEFT JOIN {SemesterTableName} s ON s.Id = d.SemesterId; ";
             var reader = this.Context.ExecuteQuery(statement);
 
             ICollection<Discipline> disciplines = new List<Discipline>();
             while (reader.Read())
             {
                 var discipline = this.MapReaderToDiscipline(reader);
+
                 disciplines.Add(discipline);
             }
 
@@ -90,6 +92,13 @@ namespace Bit8.StudentSystem.Data.Repository
             discipline.DisciplineName = reader[nameof(discipline.DisciplineName)].ToString();
             discipline.ProfessorName = reader[nameof(discipline.ProfessorName)].ToString();
             discipline.SemesterId = (int) reader[nameof(discipline.SemesterId)];
+            discipline.Semester = new Semester()
+            {
+                Id = (int) reader[nameof(discipline.SemesterId)],
+                Name = (string) reader["Name"],
+                StartDate = (DateTime) reader["StartDate"],
+                EndDate = (DateTime) reader["EndDate"]
+            };
 
             return discipline;
         }
