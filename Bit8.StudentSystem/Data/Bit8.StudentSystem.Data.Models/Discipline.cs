@@ -11,5 +11,7 @@ namespace Bit8.StudentSystem.Data.Models
         public string ProfessorName { get; set; }
 
         public int SemesterId { get; set; }
+
+        public int? Score { get; set; }
     }
 }

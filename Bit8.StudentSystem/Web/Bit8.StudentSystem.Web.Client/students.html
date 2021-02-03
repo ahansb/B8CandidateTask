@@ -1,7 +1,5 @@
 <!doctype html>
 
-<html lang="en">
-
 <head>
     <meta charset="utf-8">
 
@@ -17,14 +15,21 @@
 </head>
 
 <body>
-    <h1>Welecome</h1>
     <div id="navigationBar">
         <button id="disciplinesButton">Disciplines</button>
         <button id="semestersButton">Semesters</button>
         <button id="studentsButton">Students</button>
     </div>
-
+    <div>
+        <button id="studentAddButton" class="addButton">+ Add</button>
+    </div>
+    <div class="hint">
+        *You can double click for editting.
+    </div>
+    <table id="tableId" class="display">
+    </table>
     <script src="js/scripts.js"></script>
+    <script src="js/students.js"></script>
 </body>
 
 </html>

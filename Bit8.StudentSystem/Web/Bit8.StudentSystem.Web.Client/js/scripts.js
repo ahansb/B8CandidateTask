@@ -20,6 +20,10 @@ $("#semestersButton").on("click", () => {
     window.location.href = BaseUrl + "/semesters.html";
 });
 
+$("#studentsButton").on("click", () => {
+    window.location.href = BaseUrl + "/students.html";
+});
+
 function renderDate(data) {
     let startDate = new Date(data);
     let month = (startDate.getMonth() + 1) < 10 ? "0" + (startDate.getMonth() + 1) : (startDate.getMonth() + 1);

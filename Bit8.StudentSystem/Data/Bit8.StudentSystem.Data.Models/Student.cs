@@ -10,5 +10,6 @@ namespace Bit8.StudentSystem.Data.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public DateTime DOB { get; set; }
+        public List<Semester> Semesters { get; set; }
     }
 }
