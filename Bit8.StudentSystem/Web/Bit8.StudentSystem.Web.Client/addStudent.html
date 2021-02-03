@@ -1,0 +1,50 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Bit8 Student System</title>
+    <meta name="description" content="Bit8 Student System">
+    <meta name="author" content="Andrej Boyadjiev">
+
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link rel="stylesheet" href="node_modules/datatables.net-dt/css/jquery.dataTables.css">
+
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/datatables.net/js/jquery.dataTables.js"></script>
+</head>
+
+<body>
+    <div id="navigationBar">
+        <button id="disciplinesButton">Disciplines</button>
+        <button id="semestersButton">Semesters</button>
+        <button id="studentsButton">Students</button>
+    </div>
+    <h3>You are adding a student</h3>
+    <form id="studentForm">
+        <label for="nameInput">Name: </label>
+        <input id="nameInput" type="text" required>
+        <label for="surnameInput">Surname: </label>
+        <input id="surnameInput" type="text" required>
+        <label for="dateOfBirthInput">Date of birth: </label>
+        <input id="dateOfBirthInput" type="date" required>
+        <input id="saveEdittedDiscipline" type="submit" value="Save">
+    </form>
+    <br>
+    <form id="semesterForm">
+        <label for="semesterInput">Semester: </label>
+        <select name="semester" id="semesterInput" required>
+
+        </select>
+        <input id="addSemester" type="submit" value="Add semester to student">
+    </form>
+    <ul id="createdSemestersForStudent">
+
+    </ul>
+    <script src="js/scripts.js"></script>
+    <script src="js/addStudent.js"></script>
+</body>
+
+</html>

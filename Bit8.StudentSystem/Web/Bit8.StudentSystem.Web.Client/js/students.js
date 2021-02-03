@@ -10,8 +10,8 @@ $(document).ready(function () {
             { data: 'surname', name: 'Surname', title: 'Surname' },
             {
                 data: 'dob',
-                name: 'Date of bird',
-                title: 'Date of bird',
+                name: 'Date of birth',
+                title: 'Date of birth',
                 render: function (data, type, row) {
                     return renderDate(data);
                 }
@@ -36,6 +36,15 @@ $(document).ready(function () {
                 }
             }
         ]
+    });
+
+    $('#tableId').on('dblclick', 'tbody tr', function () {
+        let link = BaseUrl + '/student.html?id=' + myTable.row(this).data().id;
+        window.location.href = link;
+    });
+
+    $('#studentAddButton').on('click', ()=>{
+        window.location.href = BaseUrl + '/addStudent.html';
     });
 });
 
