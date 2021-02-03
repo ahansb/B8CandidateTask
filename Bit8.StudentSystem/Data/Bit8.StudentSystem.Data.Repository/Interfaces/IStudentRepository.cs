@@ -9,5 +9,7 @@ namespace Bit8.StudentSystem.Data.Repository.Interfaces
     public interface IStudentRepository
     {
         ICollection<Student> All();
+
+        int Add(Student student);
     }
 }

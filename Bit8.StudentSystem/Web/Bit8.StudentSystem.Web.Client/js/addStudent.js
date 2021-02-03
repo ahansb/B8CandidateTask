@@ -54,7 +54,7 @@ $(document).ready(function () {
 
         let semesterInput = $("#semesterInput");
         let semesterId = semesterInput.val();
-        student.semesters.push(semesterId);
+        student.semesters.push(+semesterId);
 
         let semesterOption = $("#semesterInput option[value='" + semesterId + "']");
         let semesterName = semesterOption.html();

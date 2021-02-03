@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Bit8.StudentSystem.Data.TransferModels;
 using Bit8.StudentSystem.Services.Data.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
@@ -39,8 +40,15 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // POST api/<StudentController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] StudentCreateModel model)
         {
+            if (model == null || string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Surname))
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            this.service.Create(model);
+            return Ok(new { message = "Successfully created." });
         }
 
         // PUT api/<StudentController>/5

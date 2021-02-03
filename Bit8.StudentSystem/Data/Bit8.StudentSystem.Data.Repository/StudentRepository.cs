@@ -7,6 +7,8 @@ using Bit8.StudentSystem.Data.Interfaces;
 using Bit8.StudentSystem.Data.Models;
 using Bit8.StudentSystem.Data.Repository.Interfaces;
 
+using MySql.Data.MySqlClient;
+
 namespace Bit8.StudentSystem.Data.Repository
 {
     public class StudentRepository : BaseRepository, IStudentRepository
@@ -113,6 +115,53 @@ namespace Bit8.StudentSystem.Data.Repository
             }
 
             return students;
+        }
+
+        public int Add(Student student)
+        {
+            var statement = $"INSERT INTO {StudentTableName}(`Name`,`Surname`,`DOB`)VALUES(@Name,@Surname,@DOB);SELECT Id FROM {StudentTableName} WHERE Id = LAST_INSERT_ID();";
+            var parameters = new List<MySqlParameter>()
+            {
+                new MySqlParameter("Name",student.Name),
+                new MySqlParameter("Surname",student.Surname),
+                new MySqlParameter("DOB",student.DOB)
+            };
+
+            var reader = this.Context.ExecuteQuery(statement, parameters);
+            var affectedRows = 0;
+                        
+            if (student.Semesters.Count > 0)
+            {
+                int idOfStudent = 0;
+                while (reader.Read())
+                {
+                    idOfStudent = (int) reader["Id"];
+                }
+
+                var studentSemesterStatement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ";
+                var studentSemesterParameters = new List<MySqlParameter>();
+                for (int i = 0; i < student.Semesters.Count; i++)
+                {
+                    var studentSemesterForAdd = $"({idOfStudent}, @SemesterId{i})";
+                    studentSemesterParameters.Add(new MySqlParameter($"SemesterId{i}", student.Semesters[i].Id));
+
+                    studentSemesterStatement = $"{studentSemesterStatement}{studentSemesterForAdd}";
+                    if (i == student.Semesters.Count - 1)
+                    {
+                        studentSemesterStatement = $"{studentSemesterStatement};";
+                    }
+                    else
+                    {
+                        studentSemesterStatement = $"{studentSemesterStatement},";
+                    }
+                }
+
+                this.Context.CloseConnection();
+                this.Context.OpenConnection();
+                affectedRows = this.Context.ExecuteNonQuery(studentSemesterStatement, studentSemesterParameters);
+            }
+
+            return affectedRows + 1;
         }
     }
 }
