@@ -122,6 +122,21 @@ namespace Bit8.StudentSystem.Data.Repository
             return affectedRows + 1;
         }
 
+        public int Update(int id, Semester semester)
+        {
+            var statement = $"UPDATE {SemesterTableName} SET Name = @Name, StartDate = @StartDate, EndDate = @EndDate WHERE Id = {id}";
+            var parameters = new List<MySqlParameter>()
+            {
+                new MySqlParameter("Name", semester.Name),
+                new MySqlParameter("StartDate", semester.StartDate),
+                new MySqlParameter("EndDate", semester.EndDate)
+            };
+
+            var affectedRows = this.Context.ExecuteNonQuery(statement, parameters);
+
+            return affectedRows;
+        }
+
         private Semester MapReaderToSemester(MySqlDataReader reader)
         {
             var semester = new Semester();

@@ -57,13 +57,20 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
             }
             
             this.semesterService.Create(model);
-            return Ok(new { message = "Successfully updated." });
+            return Ok(new { message = "Successfully created." });
         }
 
         // PUT api/<SemesterController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] SemesterEditModel model)
         {
+            if (model == null || string.IsNullOrWhiteSpace(model.Name))
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            this.semesterService.Edit(id, model);
+            return Ok(new { message = "Successfully updated." });
         }
 
         // DELETE api/<SemesterController>/5

@@ -55,5 +55,17 @@ namespace Bit8.StudentSystem.Services.Data
 
             return affectedRows;
         }
+
+        public int Edit(int id, SemesterEditModel model)
+        {
+            var semester = new Semester()
+            {
+                Name = model.Name,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate
+            };
+            var affectedRows = this.repository.Update(id, semester);
+            return affectedRows;
+        }
     }
 }

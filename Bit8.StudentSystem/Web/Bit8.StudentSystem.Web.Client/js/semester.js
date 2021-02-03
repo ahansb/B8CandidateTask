@@ -5,14 +5,13 @@ $(document).ready(function () {
         url: BaseServerUrl + "/semester/" + edittingSemesterId,
         success: (data) => {
             originalObject = data;
-
             let header = $("#disciplineHeader");
             let headerHtml = header.html();
             header.html(headerHtml + data.id);
 
             $("#idInput").val(data.id);
             $("#nameInput").val(data.name);
-            $("#startDateInput").val(renderDate( data.startDate));
+            $("#startDateInput").val(renderDate(data.startDate));
             $("#endDateInput").val(renderDate(data.endDate));
 
             let disciplinesList = $("#disciplinesList");
@@ -24,15 +23,13 @@ $(document).ready(function () {
                 disciplinesList.html(disciplinesList.html() + item);
             });
 
-            $("a.deleteButton").click(function (){
-                var disciplineForDeleteId =  $(this).data("id");
+            $("a.deleteButton").click(function () {
+                var disciplineForDeleteId = $(this).data("id");
                 debugger;
                 $.ajax({
                     type: "DELETE",
                     url: BaseServerUrl + "/discipline/" + disciplineForDeleteId,
-                    // data: JSON.stringify({ professorName }),
                     contentType: "application/json; charset=utf-8",
-                   // dataType: "json",
                     success: (data) => {
                         window.location.href = BaseUrl + "/semester.html?id=" + edittingSemesterId;
                     },
@@ -52,7 +49,7 @@ $(document).ready(function () {
                 discipline.disciplineName = $("#disciplineNameInput").val();
                 discipline.professorName = $("#professorNameInput").val();
                 discipline.semesterId = +edittingSemesterId;
-        
+
                 $.ajax({
                     type: "POST",
                     url: BaseServerUrl + "/discipline",
@@ -67,7 +64,8 @@ $(document).ready(function () {
                         if (errMsg.responseJSON != undefined) {
                             message = errMsg.responseJSON.message;
                         }
-                        alert("Status Code " + errMsg.status + " " + message);            }
+                        alert("Status Code " + errMsg.status + " " + message);
+                    }
                 });
             });
         }
@@ -75,16 +73,19 @@ $(document).ready(function () {
 
     editSemesterForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        let professorName = $("#professorNameInput").val();
-        if (professorName != originalObject.professorName) {
+        let name = $("#nameInput").val();
+        let startDate = $("#startDateInput").val();
+        let endDate = $("#endDateInput").val();
+
+        if (name != originalObject.name || startDate != originalObject.startDate || endDate != originalObject.endDate) {
             $.ajax({
                 type: "PUT",
-                url: BaseServerUrl + "/discipline/" + originalObject.id,
-                data: JSON.stringify({ professorName }),
+                url: BaseServerUrl + "/semester/" + originalObject.id,
+                data: JSON.stringify({ name, startDate, endDate }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: (data) => {
-                    window.location.href = BaseUrl + "/disciplines.html";
+                    window.location.href = BaseUrl + "/semesters.html";
                 },
                 error: (errMsg) => {
                     let message = "";
@@ -95,9 +96,8 @@ $(document).ready(function () {
                 }
             });
         } else {
-            window.location.href = BaseUrl + "/disciplines.html";
+            window.location.href = BaseUrl + "/semesters.html";
         }
-
     });
 });
 
