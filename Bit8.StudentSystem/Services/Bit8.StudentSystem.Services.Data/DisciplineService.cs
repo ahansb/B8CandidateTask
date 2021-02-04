@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-using Bit8.StudentSystem.Data.Models;
 using Bit8.StudentSystem.Data.Repository.Interfaces;
 using Bit8.StudentSystem.Data.TransferModels;
 using Bit8.StudentSystem.Services.Data.Interfaces;

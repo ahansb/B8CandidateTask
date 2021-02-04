@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-using Bit8.StudentSystem.Data.Models;
+using Bit8.StudentSystem.Data.TransferModels;
 
 namespace Bit8.StudentSystem.Data.Repository.Interfaces
 {

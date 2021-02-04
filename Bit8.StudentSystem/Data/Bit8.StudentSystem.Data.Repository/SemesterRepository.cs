@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Bit8.StudentSystem.Data.Interfaces;
-using Bit8.StudentSystem.Data.Models;
 using Bit8.StudentSystem.Data.Repository.Interfaces;
+using Bit8.StudentSystem.Data.TransferModels;
 
 using MySql.Data.MySqlClient;
 

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bit8.StudentSystem.Data.Models\Bit8.StudentSystem.Data.Models.csproj" />
+    <ProjectReference Include="..\Bit8.StudentSystem.Data.TransferModels\Bit8.StudentSystem.Data.TransferModels.csproj" />
     <ProjectReference Include="..\Bit8.StudentSystem.Data\Bit8.StudentSystem.Data.csproj" />
   </ItemGroup>
 
