@@ -1,4 +1,4 @@
-$(document).ready(function () {
+
     let edittingStudentId = getUrlVars()["id"];
     let originalObject = {};
     $.ajax({
@@ -56,7 +56,7 @@ $(document).ready(function () {
                     }
 
                     item += "<li>Id: " + discipline.id + ", Name: " + discipline.disciplineName + ", Professor: " + discipline.professorName
-                        + " Mark: " + discipline.score + " </li>";
+                        + " " + getScoreInput(discipline.id, discipline.score) + " </li>";
                 });
 
                 item += "</ul></li><br>";
@@ -113,4 +113,79 @@ $(document).ready(function () {
             }
         });
     });
-});
+
+    $(document).on('submit', '.scoreForm', function (e) {
+        e.preventDefault();
+        let form = $(e.target);
+        let formId = form.attr("id");
+        let disciplineId = formId.slice(formId.indexOf("-") + 1);
+        let input = $(form.children("input")[0]);
+        let button = $(form.children("input")[1]);
+        let score = +input.val();
+        let isCreating = button.val() == "Save";
+        let requestType = isCreating ? "POST" : "PUT";
+        $.ajax({
+            type: requestType,
+            url: BaseServerUrl + "/student/" + edittingStudentId + "/disciplineScore",
+            data: JSON.stringify({ disciplineId: +disciplineId, score: +score }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (data) => {
+                let link = BaseUrl + '/student.html?id=' + edittingStudentId;
+                window.location.href = link;
+            },
+            error: (errMsg) => {
+                let message = "";
+                if (errMsg.responseJSON != undefined) {
+                    message = errMsg.responseJSON.message;
+                }
+                alert("Status Code " + errMsg.status + " " + message);
+                let link = BaseUrl + '/student.html?id=' + edittingStudentId;
+                window.location.href = link;
+            }
+        });
+    });
+
+    function getScoreInput(disciplineId, score) {
+        let scoreInput = "<form id='scoreForm-" + disciplineId + "' class='scoreForm'>";
+        scoreInput += "<label for='disciplineScore" + disciplineId + "'>Score: </label>"
+        scoreInput += "<input type='number' id='disciplineScore" + disciplineId + "' value='" + score + "' required/>";
+        let actionButton = "";
+        if (score == null) {
+            actionButton += '<input id="addDisciplineScore' + disciplineId + '" type="submit" value="Save">';
+        } else {
+            actionButton += '<input id="addDisciplineScore' + disciplineId + '" type="submit" value="Edit">';
+        }
+    
+        scoreInput += actionButton;
+        scoreInput += "</form>";
+        scoreInput += "<button onclick='deleteScore("+disciplineId+")'>Delete</button>";
+        return scoreInput;
+    }
+
+
+function deleteScore(disciplineId){
+    $.ajax({
+        type: "DELETE",
+        url: BaseServerUrl + "/student/" + edittingStudentId + "/disciplineScore",
+        data: JSON.stringify({ disciplineId: +disciplineId }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: (data) => {
+            let link = BaseUrl + '/student.html?id=' + edittingStudentId;
+            window.location.href = link;
+        },
+        error: (errMsg) => {
+            let message = "";
+            if (errMsg.responseJSON != undefined) {
+                message = errMsg.responseJSON.message;
+            }
+            alert("Status Code " + errMsg.status + " " + message);
+            let link = BaseUrl + '/student.html?id=' + edittingStudentId;
+            window.location.href = link;
+        }
+    });
+}
+
+
+

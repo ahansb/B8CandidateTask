@@ -220,7 +220,7 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public int DeleteStudentSemester(int id, int semesterId)
         {
-            if (id <=0 || semesterId<=0)
+            if (id <= 0 || semesterId <= 0)
             {
                 return 0;
             }
@@ -238,6 +238,42 @@ namespace Bit8.StudentSystem.Data.Repository
             }
 
             var statement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ({id}, {semesterId});";
+            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            return affectedRows;
+        }
+
+        public int AddStudentDisciplineScore(int id, int disciplineId, int score)
+        {
+            if (id <= 0 || disciplineId <= 0 || score <= 0)
+            {
+                return 0;
+            }
+
+            var statement = $"INSERT INTO  {ScoreTableName} (`StudentId`,`DisciplineId`,`Score`) VALUES ({id}, {disciplineId}, {score});";
+            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            return affectedRows;
+        }
+
+        public int UpdateStudentDisciplineScore(int id, int disciplineId, int score)
+        {
+            if (id <= 0 || disciplineId <= 0 || score <= 0)
+            {
+                return 0;
+            }
+
+            var statement = $"UPDATE {ScoreTableName} SET Score = {score} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
+            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            return affectedRows;
+        }
+
+        public int DeleteStudentDisciplineScore(int id, int disciplineId)
+        {
+            if (id <= 0 || disciplineId <= 0)
+            {
+                return 0;
+            }
+
+            var statement = $"DELETE FROM {ScoreTableName} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
             var affectedRows = this.Context.ExecuteNonQuery(statement);
             return affectedRows;
         }

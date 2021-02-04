@@ -84,7 +84,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // POST api/<StudentController>/5/semester
         [HttpPost("{id}/semester")]
-        public IActionResult Post(int id, [FromBody] StudentSemesterCreateModel model)
+        public IActionResult AddStudentSemester(int id, [FromBody] StudentSemesterCreateModel model)
         {
             if (id <= 0 || model == null || model.Id <= 0)
             {
@@ -92,6 +92,45 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
             }
 
             this.service.AddStudentSemester(id, model);
+            return Ok(new { message = "Successfully created." });
+        }
+
+        // POST api/<StudentController>/5/disciplineScore
+        [HttpPost("{id}/disciplineScore")]
+        public IActionResult SetStudentScore(int id, [FromBody] StudentDisciplineScore model)
+        {
+            if (id <= 0 || model == null || model.DisciplineId <= 0 || model.Score <= 0)
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            this.service.AddStudentDisciplineScore(id, model);
+            return Ok(new { message = "Successfully created." });
+        }
+
+        // PUT api/<StudentController>/5/disciplineScore
+        [HttpPut("{id}/disciplineScore")]
+        public IActionResult EditStudentScore(int id, [FromBody] StudentDisciplineScore model)
+        {
+            if (id <= 0 || model == null || model.DisciplineId <= 0 || model.Score <= 0)
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            this.service.EditStudentDisciplineScore(id, model);
+            return Ok(new { message = "Successfully created." });
+        }
+
+        // PUT api/<StudentController>/5/disciplineScore
+        [HttpDelete("{id}/disciplineScore")]
+        public IActionResult DeleteStudentScore(int id, [FromBody] DeleteStudentDisciplineScore model)
+        {
+            if (id <= 0 || model == null || model.DisciplineId <= 0)
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            this.service.DeleteStudentDisciplineScore(id, model);
             return Ok(new { message = "Successfully created." });
         }
     }

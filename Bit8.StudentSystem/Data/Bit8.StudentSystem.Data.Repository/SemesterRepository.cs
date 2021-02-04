@@ -90,35 +90,41 @@ namespace Bit8.StudentSystem.Data.Repository
             };
 
             var reader = this.Context.ExecuteQuery(statement, parameters);
-            int idOfSemester = 0;
-            while (reader.Read())
+            
+            var affectedRows = 0;
+            if (semester.Disciplines.Count>0)
             {
-                idOfSemester = (int) reader["Id"];
-            }
-
-            var disciplineStatement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ";
-            var disciplineParameters = new List<MySqlParameter>();
-            for (int i = 0; i < semester.Disciplines.Count; i++)
-            {
-                var disciplineForAdd = $"(@DisciplineName{i}, @ProfessorName{i}, @SemesterId{i})";
-                disciplineParameters.Add(new MySqlParameter($"DisciplineName{i}", semester.Disciplines[i].DisciplineName));
-                disciplineParameters.Add(new MySqlParameter($"ProfessorName{i}", semester.Disciplines[i].ProfessorName));
-                disciplineParameters.Add(new MySqlParameter($"SemesterId{i}", idOfSemester));
-
-                disciplineStatement = $"{disciplineStatement}{disciplineForAdd}";
-                if (i == semester.Disciplines.Count - 1)
+                int idOfSemester = 0;
+                while (reader.Read())
                 {
-                    disciplineStatement = $"{disciplineStatement};";
+                    idOfSemester = (int) reader["Id"];
                 }
-                else
-                {
-                    disciplineStatement = $"{disciplineStatement},";
-                }
-            }
 
-            this.Context.CloseConnection();
-            this.Context.OpenConnection();
-            var affectedRows = this.Context.ExecuteNonQuery(disciplineStatement, disciplineParameters);
+                var disciplineStatement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ";
+                var disciplineParameters = new List<MySqlParameter>();
+                for (int i = 0; i < semester.Disciplines.Count; i++)
+                {
+                    var disciplineForAdd = $"(@DisciplineName{i}, @ProfessorName{i}, @SemesterId{i})";
+                    disciplineParameters.Add(new MySqlParameter($"DisciplineName{i}", semester.Disciplines[i].DisciplineName));
+                    disciplineParameters.Add(new MySqlParameter($"ProfessorName{i}", semester.Disciplines[i].ProfessorName));
+                    disciplineParameters.Add(new MySqlParameter($"SemesterId{i}", idOfSemester));
+
+                    disciplineStatement = $"{disciplineStatement}{disciplineForAdd}";
+                    if (i == semester.Disciplines.Count - 1)
+                    {
+                        disciplineStatement = $"{disciplineStatement};";
+                    }
+                    else
+                    {
+                        disciplineStatement = $"{disciplineStatement},";
+                    }
+                }
+
+                this.Context.CloseConnection();
+                this.Context.OpenConnection();
+                affectedRows = this.Context.ExecuteNonQuery(disciplineStatement, disciplineParameters);
+            }
+           
             return affectedRows + 1;
         }
 

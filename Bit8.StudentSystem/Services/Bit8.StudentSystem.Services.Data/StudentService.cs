@@ -57,12 +57,45 @@ namespace Bit8.StudentSystem.Services.Data
 
         public int AddStudentSemester(int id, StudentSemesterCreateModel model)
         {
-            if (model == null|| model.Id<=0)
+            if (model == null || model.Id <= 0)
             {
                 return 0;
             }
 
             var affectedRows = this.repository.AddStudentSemester(id, model.Id);
+            return affectedRows;
+        }
+
+        public int AddStudentDisciplineScore(int id, StudentDisciplineScore model)
+        {
+            if (id <= 0 || model == null || model.DisciplineId <= 0 || model.Score <= 0)
+            {
+                return 0;
+            }
+
+            var affectedRows = this.repository.AddStudentDisciplineScore(id, model.DisciplineId, model.Score);
+            return affectedRows;
+        }
+
+        public int EditStudentDisciplineScore(int id, StudentDisciplineScore model)
+        {
+            if (id <= 0 || model == null || model.DisciplineId <= 0 || model.Score <= 0)
+            {
+                return 0;
+            }
+
+            var affectedRows = this.repository.UpdateStudentDisciplineScore(id, model.DisciplineId, model.Score);
+            return affectedRows;
+        }
+
+        public int DeleteStudentDisciplineScore(int id, DeleteStudentDisciplineScore model)
+        {
+            if (id <= 0 || model == null || model.DisciplineId <= 0)
+            {
+                return 0;
+            }
+
+            var affectedRows = this.repository.DeleteStudentDisciplineScore(id, model.DisciplineId);
             return affectedRows;
         }
     }

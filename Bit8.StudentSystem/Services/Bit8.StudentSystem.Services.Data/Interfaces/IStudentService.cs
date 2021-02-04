@@ -14,5 +14,8 @@ namespace Bit8.StudentSystem.Services.Data.Interfaces
         int Create(StudentCreateModel model);
         int DeleteStudentSemester(int id, int semesterId);
         int AddStudentSemester(int id, StudentSemesterCreateModel model);
+        int AddStudentDisciplineScore(int id, StudentDisciplineScore model);
+        int EditStudentDisciplineScore(int id, StudentDisciplineScore model);
+        int DeleteStudentDisciplineScore(int id, DeleteStudentDisciplineScore model);
     }
 }
