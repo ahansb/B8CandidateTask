@@ -22,17 +22,19 @@
         <button id="semestersButton">Semesters</button>
         <button id="studentsButton">Students</button>
     </div>
-    <h3>You are adding a student</h3>
-    <form id="studentForm">
+    <h3 id="studentHeader">You are editting student with id </h3>
+    <form id="editStudentForm">
+        <label for="idInput">Id: </label>
+        <input id="idInput" type="number" readonly>
         <label for="nameInput">Name: </label>
         <input id="nameInput" type="text" required>
         <label for="surnameInput">Surname: </label>
         <input id="surnameInput" type="text" required>
         <label for="dateOfBirthInput">Date of birth: </label>
         <input id="dateOfBirthInput" type="date" required>
-        <input id="saveEdittedDiscipline" type="submit" value="Save">
+        <input id="saveEdittedStudent" type="submit" value="Save">
     </form>
-    <br>
+    <div class="margin-top margin-bottom">Semesters</div>
     <form id="semesterForm">
         <label for="semesterInput">Semester: </label>
         <select name="semester" id="semesterInput" required>
@@ -40,11 +42,11 @@
         </select>
         <input id="addSemester" type="submit" value="Add semester to student">
     </form>
-    <ul id="createdSemestersForStudent">
+    <ul id="studentSemesters">
 
     </ul>
     <script src="js/scripts.js"></script>
-    <script src="js/addStudent.js"></script>
+    <script src="js/student.js"></script>
 </body>
 
 </html>

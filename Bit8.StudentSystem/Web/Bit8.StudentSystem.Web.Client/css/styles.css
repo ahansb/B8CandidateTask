@@ -23,3 +23,8 @@
 .margin-bottom{
     margin-bottom: 10px;;
 }
+
+a.disabled {
+    pointer-events: none;
+    color: #ccc;
+}

@@ -61,7 +61,8 @@ $(document).ready(function () {
         semesterOption.remove();
 
         let semesterList = $("#createdSemestersForStudent");
-        semesterList.html(semesterList.html() + "<li id='semesterListItem" + semesterId + "'><span class='semesterNameWrapper'>" + semesterName + "</span> - <a class='deleteButton' id='deleteSemester" + semesterId + "'href='javascript:void(0);' data-id='" + semesterId + "'> Delete</a></li>");
+        semesterList.html(semesterList.html() + "<li id='semesterListItem" + semesterId + "'><span class='semesterNameWrapper'>" + semesterName 
+        + "</span> - <a class='deleteButton' id='deleteSemester" + semesterId + "'href='javascript:void(0);' data-id='" + semesterId + "'> Delete</a></li>");
 
         $("a.deleteButton").click(function () {
             var semesterDeleteId = $(this).data("id");
