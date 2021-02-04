@@ -10,6 +10,7 @@ namespace Bit8.StudentSystem.Services.Data.Interfaces
     public interface IStudentService
     {
         ICollection<Student> GetAll();
+        Student GetById(int id);
         int Create(StudentCreateModel model);
     }
 }

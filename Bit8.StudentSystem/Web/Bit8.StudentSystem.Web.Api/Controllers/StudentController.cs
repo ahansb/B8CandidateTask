@@ -33,9 +33,15 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 
         // GET api/<StudentController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            if (id <= 0)
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            var result = this.service.GetById(id);
+            return new JsonResult(result);
         }
 
         // POST api/<StudentController>

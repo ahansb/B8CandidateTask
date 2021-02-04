@@ -44,13 +44,7 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public ICollection<Student> All()
         {
-            var statementLineOne = $"SELECT st.Id as {StudentIdText}, st.Name as {StudentNameText}, st.Surname as {StudentSurnameText}, st.DOB as {StudentDOBText},";
-            var statementSecondLine = $"sem.Id as {SemesterIdText}, sem.Name as {SemesterNameText}, sem.StartDate as {SemesterStartDateText}, sem.EndDate as {SemesterEndDateText},";
-            var statementThirdLine = $"d.Id as {DisciplineIdText}, d.DisciplineName, d.ProfessorName as {DisciplineProfessorNameText}, d.SemesterId as {DisciplineSemesterIdText},";
-            var statementFourthLine = $"sc.Score ";
-            var statementFifthLine = $"FROM {StudentTableName} st LEFT JOIN {StudentSemesterTableName} ss ON ss.StudentId = st.Id LEFT JOIN {SemesterTableName} sem ON sem.Id = ss.SemesterId ";
-            var statementSixthLine = $"LEFT JOIN {DisciplineTableName} d ON d.SemesterId = sem.Id LEFT JOIN {ScoreTableName} sc ON sc.StudentId = st.Id AND sc.DisciplineId = d.Id ORDER BY st.Id, sem.Id, d.Id;";
-            var statement = $"{statementLineOne}{statementSecondLine}{statementThirdLine}{statementFourthLine}{statementFifthLine}{statementSixthLine}";
+            var statement = this.GetSelectStatement();
             var reader = this.Context.ExecuteQuery(statement);
 
             ICollection<Student> students = new List<Student>();
@@ -117,6 +111,66 @@ namespace Bit8.StudentSystem.Data.Repository
             return students;
         }
 
+        public Student GetById(int id)
+        {
+            var statement = this.GetSelectStatement(id);
+            var reader = this.Context.ExecuteQuery(statement);
+
+            var student = new Student();
+            while (reader.Read())
+            {
+                if (student.Id == default(int))
+                {
+                    student.Id = (int) reader[StudentIdText];
+                    student.Name = reader[StudentNameText].ToString();
+                    student.Surname = reader[StudentSurnameText].ToString();
+                    student.DOB = (DateTime) reader[StudentDOBText];
+                    student.Semesters = new List<Semester>();
+                }
+
+                if (reader[SemesterIdText] != DBNull.Value)
+                {
+                    var semesterId = (int) reader[SemesterIdText];
+                    var semester = student.Semesters.Where(s => s.Id == semesterId).FirstOrDefault();
+                    if (semester == null)
+                    {
+                        var readerSemester = new Semester()
+                        {
+                            Id = semesterId,
+                            Name = reader[SemesterNameText].ToString(),
+                            StartDate = (DateTime) reader[SemesterStartDateText],
+                            EndDate = (DateTime) reader[SemesterEndDateText],
+                            Disciplines = new List<Discipline>()
+                        };
+
+                        student.Semesters.Add(readerSemester);
+                        semester = student.Semesters.Last();
+                    }
+
+                    if (reader[DisciplineIdText] != DBNull.Value)
+                    {
+                        var disciplineId = (int) reader[DisciplineIdText];
+                        var discipline = semester.Disciplines.Where(d => d.Id == disciplineId).FirstOrDefault();
+                        if (discipline == null)
+                        {
+                            var readerDiscipline = new Discipline()
+                            {
+                                Id = disciplineId,
+                                DisciplineName = reader[DisciplineNameText].ToString(),
+                                ProfessorName = reader[DisciplineProfessorNameText].ToString(),
+                                SemesterId = (int) reader[DisciplineSemesterIdText],
+                                Score = reader[ScoreText] == DBNull.Value ? null : (int?) reader[ScoreText]
+                            };
+
+                            semester.Disciplines.Add(readerDiscipline);
+                        }
+                    }
+                }
+            }
+
+            return student;
+        }
+
         public int Add(Student student)
         {
             var statement = $"INSERT INTO {StudentTableName}(`Name`,`Surname`,`DOB`)VALUES(@Name,@Surname,@DOB);SELECT Id FROM {StudentTableName} WHERE Id = LAST_INSERT_ID();";
@@ -129,7 +183,7 @@ namespace Bit8.StudentSystem.Data.Repository
 
             var reader = this.Context.ExecuteQuery(statement, parameters);
             var affectedRows = 0;
-                        
+
             if (student.Semesters.Count > 0)
             {
                 int idOfStudent = 0;
@@ -162,6 +216,22 @@ namespace Bit8.StudentSystem.Data.Repository
             }
 
             return affectedRows + 1;
+        }
+
+        private string GetSelectStatement(int? studentId = null)
+        {
+            var statementLineOne = $"SELECT st.Id as {StudentIdText}, st.Name as {StudentNameText}, st.Surname as {StudentSurnameText}, st.DOB as {StudentDOBText},";
+            var statementSecondLine = $"sem.Id as {SemesterIdText}, sem.Name as {SemesterNameText}, sem.StartDate as {SemesterStartDateText}, sem.EndDate as {SemesterEndDateText},";
+            var statementThirdLine = $"d.Id as {DisciplineIdText}, d.DisciplineName, d.ProfessorName as {DisciplineProfessorNameText}, d.SemesterId as {DisciplineSemesterIdText},";
+            var statementFourthLine = $"sc.Score ";
+            var statementFifthLine = $"FROM {StudentTableName} st LEFT JOIN {StudentSemesterTableName} ss ON ss.StudentId = st.Id LEFT JOIN {SemesterTableName} sem ON sem.Id = ss.SemesterId ";
+            var statementSixthLine = $"LEFT JOIN {DisciplineTableName} d ON d.SemesterId = sem.Id LEFT JOIN {ScoreTableName} sc ON sc.StudentId = st.Id AND sc.DisciplineId = d.Id ";
+
+            var statement = $"{statementLineOne}{statementSecondLine}{statementThirdLine}{statementFourthLine}{statementFifthLine}{statementSixthLine}";
+            var statementOrderClause = " ORDER BY st.Id, sem.Id, d.Id;";
+            statement = studentId.HasValue ? $"{statement}WHERE st.Id = {studentId} {statementOrderClause}" : $"{statement} {statementOrderClause}";
+
+            return statement;
         }
     }
 }
