@@ -218,6 +218,18 @@ namespace Bit8.StudentSystem.Data.Repository
             return affectedRows + 1;
         }
 
+        public int DeleteStudentSemester(int id, int semesterId)
+        {
+            if (id <=0 || semesterId<=0)
+            {
+                return 0;
+            }
+
+            var statement = $"DELETE FROM {StudentSemesterTableName} WHERE StudentId={id} AND SemesterId={semesterId};";
+            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            return affectedRows;
+        }
+
         private string GetSelectStatement(int? studentId = null)
         {
             var statementLineOne = $"SELECT st.Id as {StudentIdText}, st.Name as {StudentNameText}, st.Surname as {StudentSurnameText}, st.DOB as {StudentDOBText},";

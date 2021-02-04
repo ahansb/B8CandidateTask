@@ -68,5 +68,18 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         public void Delete(int id)
         {
         }
+
+        // DELETE api/<StudentController>/5/semester/3
+        [HttpDelete("{id}/semester/{semesterId}")]
+        public IActionResult DeleteStudentSemester(int id, int semesterId)
+        {
+            if (id <= 0 || semesterId <= 0)
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            this.service.DeleteStudentSemester(id, semesterId);
+            return Ok(new { message = "Successfully deleted." });
+        }
     }
 }

@@ -66,6 +66,28 @@ $(document).ready(function () {
                     $("#semesterDelete" + semesterDeleteId).addClass("disabled");
                 }
             });
+
+            $("a.deleteButton").click(function () {
+                var semesterDeleteId = $(this).data("id");
+                $.ajax({
+                    type: "DELETE",
+                    url: BaseServerUrl + '/student/' + edittingStudentId + '/semester/' + semesterDeleteId,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (response) => {
+                        let link = BaseUrl + '/student.html?id=' + edittingStudentId;
+                        window.location.href = link;
+                    },
+                    error: (errMsg) => {
+                        debugger;
+                        let message = "";
+                        if (errMsg.responseJSON != undefined) {
+                            message = errMsg.responseJSON.message;
+                        }
+                        alert("Status Code " + errMsg.status + " " + message);
+                    }
+                });
+            });
         }
     });
 

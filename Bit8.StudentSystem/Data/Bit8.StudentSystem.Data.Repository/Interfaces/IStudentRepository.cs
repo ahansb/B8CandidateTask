@@ -11,5 +11,6 @@ namespace Bit8.StudentSystem.Data.Repository.Interfaces
         ICollection<Student> All();
         Student GetById(int id);
         int Add(Student student);
+        int DeleteStudentSemester(int id, int semesterId);
     }
 }

@@ -48,5 +48,11 @@ namespace Bit8.StudentSystem.Services.Data
             var affectedRows = this.repository.Add(student);
             return affectedRows;
         }
+
+        public int DeleteStudentSemester(int id, int semesterId)
+        {
+            var affectedRows = this.repository.DeleteStudentSemester(id, semesterId);
+            return affectedRows;
+        }
     }
 }

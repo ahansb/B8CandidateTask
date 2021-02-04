@@ -12,5 +12,6 @@ namespace Bit8.StudentSystem.Services.Data.Interfaces
         ICollection<Student> GetAll();
         Student GetById(int id);
         int Create(StudentCreateModel model);
+        int DeleteStudentSemester(int id, int semesterId);
     }
 }
