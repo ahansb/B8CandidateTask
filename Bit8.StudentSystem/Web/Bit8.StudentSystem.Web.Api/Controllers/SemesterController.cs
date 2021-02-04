@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Bit8.StudentSystem.Data.TransferModels;
 using Bit8.StudentSystem.Services.Data.Interfaces;

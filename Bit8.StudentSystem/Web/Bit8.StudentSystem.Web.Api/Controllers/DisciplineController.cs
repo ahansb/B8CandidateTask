@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Bit8.StudentSystem.Data.TransferModels;
+﻿using Bit8.StudentSystem.Data.TransferModels;
 using Bit8.StudentSystem.Services.Data.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +64,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (id<1)
+            if (id < 1)
             {
                 return BadRequest(new { message = "Bad parameters passed!" });
             }

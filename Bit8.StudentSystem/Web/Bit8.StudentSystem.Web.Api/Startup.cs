@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using Bit8.StudentSystem.Data;
 using Bit8.StudentSystem.Data.Interfaces;
 using Bit8.StudentSystem.Data.Repository;
@@ -12,12 +7,9 @@ using Bit8.StudentSystem.Services.Data.Interfaces;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Bit8.StudentSystem.Web.Api
 {
