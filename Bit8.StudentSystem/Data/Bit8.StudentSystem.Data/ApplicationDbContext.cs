@@ -18,54 +18,13 @@ namespace Bit8.StudentSystem.Data
             this.connectionString = connectionString;
         }
 
-        private MySqlConnection Connection { get; set; }
+        public MySqlConnection Connection { get { return new MySqlConnection(this.connectionString); } }
 
         public void Initialize()
         {
             this.DropDbIfExistsAndRecreate();
             this.CreateTables();
             this.SeedData();
-        }
-
-        public void OpenConnection()
-        {
-            this.Connection = new MySqlConnection(this.connectionString);
-            this.Connection.Open();
-        }
-
-        public MySqlDataReader ExecuteQuery(string statement, ICollection<MySqlParameter> parameters = null)
-        {
-            var command = new MySqlCommand(statement, this.Connection);
-            if (parameters != null)
-            {
-                foreach (var parameter in parameters)
-                {
-                    command.Parameters.Add(parameter);
-                }
-            }
-
-            var dataReader = command.ExecuteReader();
-
-            return dataReader;
-        }
-
-        public int ExecuteNonQuery(string statement, ICollection<MySqlParameter> parameters = null)
-        {
-            var command = new MySqlCommand(statement, this.Connection);
-            if (parameters != null)
-            {
-                foreach (var parameter in parameters)
-                {
-                    command.Parameters.Add(parameter);
-                }
-            }
-            var affectedRows = command.ExecuteNonQuery();
-            return affectedRows;
-        }
-
-        public void CloseConnection()
-        {
-            this.Connection.Close();
         }
 
         private void SeedData()
@@ -88,7 +47,7 @@ namespace Bit8.StudentSystem.Data
                 statement = File.ReadAllText(path);
             }
 
-            using (var connection = new MySqlConnection(this.connectionString))
+            using (var connection = this.Connection)
             {
                 connection.Open();
                 var command = new MySqlCommand(statement, connection);

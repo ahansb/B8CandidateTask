@@ -8,10 +8,7 @@ namespace Bit8.StudentSystem.Data.Interfaces
 {
     public interface IApplicationDbContext
     {
+        MySqlConnection Connection { get; }
         void Initialize();
-        void OpenConnection();
-        void CloseConnection();
-        MySqlDataReader ExecuteQuery(string statement, ICollection<MySqlParameter> parameters = null);
-        int ExecuteNonQuery(string statement, ICollection<MySqlParameter> parameters = null);
     }
 }

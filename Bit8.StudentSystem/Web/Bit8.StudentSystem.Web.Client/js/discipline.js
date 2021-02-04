@@ -13,6 +13,7 @@ $(document).ready(function () {
             $("#disciplineNameInput").val(data.disciplineName);
             $("#professorNameInput").val(data.professorName);
             $("#semesterIdInput").val(data.semesterId);
+            $("#semesterNameInput").val(data.semester.name);
         }
     });
 

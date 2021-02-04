@@ -18,31 +18,61 @@ namespace Bit8.StudentSystem.Data.Repository
         {
         }
 
+        //TODO: 1 query
         public ICollection<Semester> All()
         {
-            var statement = $"SELECT * FROM {SemesterTableName};";
-            var reader = this.Context.ExecuteQuery(statement);
-
             ICollection<Semester> semesters = new List<Semester>();
-            while (reader.Read())
+
+            using (var connection = this.Context.Connection)
             {
-                var semester = this.MapReaderToSemester(reader);
-                semesters.Add(semester);
+                var statement = $"SELECT * FROM {SemesterTableName};";
+                var command = new MySqlCommand(statement, connection);
+
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var semester = this.MapReaderToSemester(reader);
+                        semesters.Add(semester);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
             }
 
             foreach (var semester in semesters)
             {
-                var disciplineStatement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
-                this.Context.CloseConnection();
-                this.Context.OpenConnection();
-
-                var disciplineReader = this.Context.ExecuteQuery(disciplineStatement);
-
                 List<Discipline> disciplines = new List<Discipline>();
-                while (disciplineReader.Read())
+                using (var connection = this.Context.Connection)
                 {
-                    var discipline = this.MapReaderToDiscipline(disciplineReader);
-                    disciplines.Add(discipline);
+                    var disciplineStatement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
+                    var command = new MySqlCommand(disciplineStatement, connection);
+
+
+                    try
+                    {
+                        connection.Open();
+                        var reader = command.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            var discipline = this.MapReaderToDiscipline(reader);
+                            disciplines.Add(discipline);
+                        }
+
+                        reader.Close();
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
                 }
 
                 semester.Disciplines = disciplines;
@@ -51,28 +81,54 @@ namespace Bit8.StudentSystem.Data.Repository
             return semesters;
         }
 
+        //TODO: 1 query
         public Semester GetById(int id)
         {
-            var statement = $"SELECT * FROM {SemesterTableName} WHERE Id = {id};";
-            var reader = this.Context.ExecuteQuery(statement);
-
             Semester semester = new Semester();
-            while (reader.Read())
+            using (var connection = this.Context.Connection)
             {
-                semester = this.MapReaderToSemester(reader);
+                var statement = $"SELECT * FROM {SemesterTableName} WHERE Id = {id};";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        semester = this.MapReaderToSemester(reader);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
             }
 
-            var disciplineStatement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
-            this.Context.CloseConnection();
-            this.Context.OpenConnection();
-
-            var disciplineReader = this.Context.ExecuteQuery(disciplineStatement);
-
             List<Discipline> disciplines = new List<Discipline>();
-            while (disciplineReader.Read())
+            using (var connection = this.Context.Connection)
             {
-                var discipline = this.MapReaderToDiscipline(disciplineReader);
-                disciplines.Add(discipline);
+                var statement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var discipline = this.MapReaderToDiscipline(reader);
+                        disciplines.Add(discipline);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
             }
 
             semester.Disciplines = disciplines;
@@ -81,64 +137,97 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public int Add(Semester semester)
         {
-            var statement = $"INSERT INTO {SemesterTableName}(`Name`,`StartDate`,`EndDate`)VALUES(@Name,@StartDate,@EndDate);SELECT Id FROM {SemesterTableName} WHERE Id = LAST_INSERT_ID();";
-            var parameters = new List<MySqlParameter>()
-            {
-                new MySqlParameter("Name",semester.Name),
-                new MySqlParameter("StartDate",semester.StartDate),
-                new MySqlParameter("EndDate",semester.EndDate)
-            };
-
-            var reader = this.Context.ExecuteQuery(statement, parameters);
-            
             var affectedRows = 0;
-            if (semester.Disciplines.Count>0)
+            int idOfSemester = 0;
+            using (var connection = this.Context.Connection)
             {
-                int idOfSemester = 0;
-                while (reader.Read())
-                {
-                    idOfSemester = (int) reader["Id"];
-                }
+                var statement = $"INSERT INTO {SemesterTableName}(`Name`,`StartDate`,`EndDate`)VALUES(@Name,@StartDate,@EndDate);SELECT Id FROM {SemesterTableName} WHERE Id = LAST_INSERT_ID();";
+                var command = new MySqlCommand(statement, connection);
 
-                var disciplineStatement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ";
-                var disciplineParameters = new List<MySqlParameter>();
-                for (int i = 0; i < semester.Disciplines.Count; i++)
+                command.Parameters.AddWithValue("Name", semester.Name);
+                command.Parameters.AddWithValue("StartDate", semester.StartDate);
+                command.Parameters.AddWithValue("EndDate", semester.EndDate);
+                try
                 {
-                    var disciplineForAdd = $"(@DisciplineName{i}, @ProfessorName{i}, @SemesterId{i})";
-                    disciplineParameters.Add(new MySqlParameter($"DisciplineName{i}", semester.Disciplines[i].DisciplineName));
-                    disciplineParameters.Add(new MySqlParameter($"ProfessorName{i}", semester.Disciplines[i].ProfessorName));
-                    disciplineParameters.Add(new MySqlParameter($"SemesterId{i}", idOfSemester));
-
-                    disciplineStatement = $"{disciplineStatement}{disciplineForAdd}";
-                    if (i == semester.Disciplines.Count - 1)
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        disciplineStatement = $"{disciplineStatement};";
-                    }
-                    else
-                    {
-                        disciplineStatement = $"{disciplineStatement},";
+                        idOfSemester = (int) reader["Id"];
                     }
                 }
+                catch (Exception)
+                {
 
-                this.Context.CloseConnection();
-                this.Context.OpenConnection();
-                affectedRows = this.Context.ExecuteNonQuery(disciplineStatement, disciplineParameters);
+                    throw;
+                }
+
             }
-           
+
+            if (semester.Disciplines.Count > 0)
+            {
+                using (var connection = this.Context.Connection)
+                {
+                    var statement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ";
+                    var command = new MySqlCommand(statement, connection);
+
+                    for (int i = 0; i < semester.Disciplines.Count; i++)
+                    {
+                        var disciplineForAdd = $"(@DisciplineName{i}, @ProfessorName{i}, @SemesterId{i})";
+                        command.Parameters.AddWithValue($"DisciplineName{i}", semester.Disciplines[i].DisciplineName);
+                        command.Parameters.AddWithValue($"ProfessorName{i}", semester.Disciplines[i].ProfessorName);
+                        command.Parameters.AddWithValue($"SemesterId{i}", idOfSemester);
+
+                        statement = $"{statement}{disciplineForAdd}";
+                        if (i == semester.Disciplines.Count - 1)
+                        {
+                            statement = $"{statement};";
+                        }
+                        else
+                        {
+                            statement = $"{statement},";
+                        }
+                    }
+
+                    try
+                    {
+                        connection.Open();
+                        affectedRows = command.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                }
+            }
+
             return affectedRows + 1;
         }
 
         public int Update(int id, Semester semester)
         {
-            var statement = $"UPDATE {SemesterTableName} SET Name = @Name, StartDate = @StartDate, EndDate = @EndDate WHERE Id = {id}";
-            var parameters = new List<MySqlParameter>()
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
             {
-                new MySqlParameter("Name", semester.Name),
-                new MySqlParameter("StartDate", semester.StartDate),
-                new MySqlParameter("EndDate", semester.EndDate)
-            };
+                var statement = $"UPDATE {SemesterTableName} SET Name = @Name, StartDate = @StartDate, EndDate = @EndDate WHERE Id = {id}";
+                var command = new MySqlCommand(statement, connection);
 
-            var affectedRows = this.Context.ExecuteNonQuery(statement, parameters);
+                command.Parameters.AddWithValue("Name", semester.Name);
+                command.Parameters.AddWithValue("StartDate", semester.StartDate);
+                command.Parameters.AddWithValue("EndDate", semester.EndDate);
+
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
 
             return affectedRows;
         }

@@ -6,7 +6,7 @@ using Bit8.StudentSystem.Data.Interfaces;
 
 namespace Bit8.StudentSystem.Data.Repository
 {
-    public abstract class BaseRepository : IDisposable
+    public abstract class BaseRepository
     {
         private readonly IApplicationDbContext context;
 
@@ -18,7 +18,6 @@ namespace Bit8.StudentSystem.Data.Repository
             }
 
             this.context = dbContext;
-            this.Context.OpenConnection();
         }
 
         public IApplicationDbContext Context
@@ -27,11 +26,6 @@ namespace Bit8.StudentSystem.Data.Repository
             {
                 return this.context;
             }
-        }
-
-        public void Dispose()
-        {
-            this.Context.CloseConnection();
         }
     }
 }

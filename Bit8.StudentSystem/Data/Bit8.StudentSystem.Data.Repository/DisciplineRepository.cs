@@ -20,15 +20,29 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public ICollection<Discipline> All()
         {
-            var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {DisciplineTableName} d LEFT JOIN {SemesterTableName} s ON s.Id = d.SemesterId; ";
-            var reader = this.Context.ExecuteQuery(statement);
-
             ICollection<Discipline> disciplines = new List<Discipline>();
-            while (reader.Read())
+            using (var connection = this.Context.Connection)
             {
-                var discipline = this.MapReaderToDiscipline(reader);
+                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {DisciplineTableName} d LEFT JOIN {SemesterTableName} s ON s.Id = d.SemesterId;";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        var discipline = this.MapReaderToDiscipline(reader);
 
-                disciplines.Add(discipline);
+                        disciplines.Add(discipline);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
             }
 
             return disciplines;
@@ -36,13 +50,26 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public Discipline GetById(int id)
         {
-            var statement = $"SELECT * FROM {DisciplineTableName} WHERE Id = {id};";
-            var reader = this.Context.ExecuteQuery(statement);
-
             Discipline discipline = null;
-            while (reader.Read())
+            using (var connection = this.Context.Connection)
             {
-                discipline = this.MapReaderToDiscipline(reader);
+                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {DisciplineTableName} d LEFT JOIN {SemesterTableName} s ON s.Id = d.SemesterId WHERE d.Id = {id};";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        discipline = this.MapReaderToDiscipline(reader);
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
             }
 
             return discipline;
@@ -50,36 +77,70 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public int Add(Discipline discipline)
         {
-            var statement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES (@DisciplineName, @ProfessorName, @SemesterId);";
-            var parameters = new List<MySqlParameter>()
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
             {
-                new MySqlParameter("DisciplineName",discipline.DisciplineName),
-                new MySqlParameter("ProfessorName",discipline.ProfessorName),
-                new MySqlParameter("SemesterId",discipline.SemesterId)
-            };
+                var statement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES (@DisciplineName, @ProfessorName, @SemesterId);";
+                var command = new MySqlCommand(statement, connection);
 
-            var affectedRows = this.Context.ExecuteNonQuery(statement, parameters);
+                command.Parameters.AddWithValue("DisciplineName", discipline.DisciplineName);
+                command.Parameters.AddWithValue("ProfessorName", discipline.ProfessorName);
+                command.Parameters.AddWithValue("SemesterId", discipline.SemesterId);
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
 
             return affectedRows;
         }
 
         public int Update(int id, string professorName)
         {
-            var statement = $"UPDATE {DisciplineTableName} SET ProfessorName = @ProfessorName WHERE Id = {id}";
-            var parameters = new List<MySqlParameter>()
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
             {
-                new MySqlParameter("ProfessorName",professorName)
-            };
+                var statement = $"UPDATE {DisciplineTableName} SET ProfessorName = @ProfessorName WHERE Id = {id}";
+                var command = new MySqlCommand(statement, connection);
+                command.Parameters.AddWithValue("ProfessorName",professorName);
 
-            var affectedRows = this.Context.ExecuteNonQuery(statement, parameters);
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
 
             return affectedRows;
         }
 
         public int Delete(int id)
         {
-            var statement = $"DELETE FROM {DisciplineTableName} WHERE Id={id};";
-            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
+            {
+                var statement = $"DELETE FROM {DisciplineTableName} WHERE Id={id};";
+                var command = new MySqlCommand(statement, connection);
+
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
 
             return affectedRows;
         }

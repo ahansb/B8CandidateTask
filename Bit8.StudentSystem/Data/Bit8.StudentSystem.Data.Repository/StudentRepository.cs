@@ -44,67 +44,80 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public ICollection<Student> All()
         {
-            var statement = this.GetSelectStatement();
-            var reader = this.Context.ExecuteQuery(statement);
-
             ICollection<Student> students = new List<Student>();
-            while (reader.Read())
+            using (var connection = this.Context.Connection)
             {
-                var studentId = (int) reader[StudentIdText];
-
-                var student = students.Where(s => s.Id == studentId).FirstOrDefault();
-                if (student == null)
+                var statement = this.GetSelectStatement();
+                var command = new MySqlCommand(statement, connection);
+                try
                 {
-                    var readerStudent = new Student()
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        Id = studentId,
-                        Name = reader[StudentNameText].ToString(),
-                        Surname = reader[StudentSurnameText].ToString(),
-                        DOB = (DateTime) reader[StudentDOBText],
-                        Semesters = new List<Semester>()
-                    };
+                        var studentId = (int) reader[StudentIdText];
 
-                    students.Add(readerStudent);
-                    student = students.Last();
-                }
-
-                if (reader[SemesterIdText] != DBNull.Value)
-                {
-                    var semesterId = (int) reader[SemesterIdText];
-                    var semester = student.Semesters.Where(s => s.Id == semesterId).FirstOrDefault();
-                    if (semester == null)
-                    {
-                        var readerSemester = new Semester()
+                        var student = students.Where(s => s.Id == studentId).FirstOrDefault();
+                        if (student == null)
                         {
-                            Id = semesterId,
-                            Name = reader[SemesterNameText].ToString(),
-                            StartDate = (DateTime) reader[SemesterStartDateText],
-                            EndDate = (DateTime) reader[SemesterEndDateText],
-                            Disciplines = new List<Discipline>()
-                        };
-
-                        student.Semesters.Add(readerSemester);
-                        semester = student.Semesters.Last();
-                    }
-
-                    if (reader[DisciplineIdText] != DBNull.Value)
-                    {
-                        var disciplineId = (int) reader[DisciplineIdText];
-                        var discipline = semester.Disciplines.Where(d => d.Id == disciplineId).FirstOrDefault();
-                        if (discipline == null)
-                        {
-                            var readerDiscipline = new Discipline()
+                            var readerStudent = new Student()
                             {
-                                Id = disciplineId,
-                                DisciplineName = reader[DisciplineNameText].ToString(),
-                                ProfessorName = reader[DisciplineProfessorNameText].ToString(),
-                                SemesterId = (int) reader[DisciplineSemesterIdText],
-                                Score = reader[ScoreText] == DBNull.Value ? null : (int?) reader[ScoreText]
+                                Id = studentId,
+                                Name = reader[StudentNameText].ToString(),
+                                Surname = reader[StudentSurnameText].ToString(),
+                                DOB = (DateTime) reader[StudentDOBText],
+                                Semesters = new List<Semester>()
                             };
 
-                            semester.Disciplines.Add(readerDiscipline);
+                            students.Add(readerStudent);
+                            student = students.Last();
+                        }
+
+                        if (reader[SemesterIdText] != DBNull.Value)
+                        {
+                            var semesterId = (int) reader[SemesterIdText];
+                            var semester = student.Semesters.Where(s => s.Id == semesterId).FirstOrDefault();
+                            if (semester == null)
+                            {
+                                var readerSemester = new Semester()
+                                {
+                                    Id = semesterId,
+                                    Name = reader[SemesterNameText].ToString(),
+                                    StartDate = (DateTime) reader[SemesterStartDateText],
+                                    EndDate = (DateTime) reader[SemesterEndDateText],
+                                    Disciplines = new List<Discipline>()
+                                };
+
+                                student.Semesters.Add(readerSemester);
+                                semester = student.Semesters.Last();
+                            }
+
+                            if (reader[DisciplineIdText] != DBNull.Value)
+                            {
+                                var disciplineId = (int) reader[DisciplineIdText];
+                                var discipline = semester.Disciplines.Where(d => d.Id == disciplineId).FirstOrDefault();
+                                if (discipline == null)
+                                {
+                                    var readerDiscipline = new Discipline()
+                                    {
+                                        Id = disciplineId,
+                                        DisciplineName = reader[DisciplineNameText].ToString(),
+                                        ProfessorName = reader[DisciplineProfessorNameText].ToString(),
+                                        SemesterId = (int) reader[DisciplineSemesterIdText],
+                                        Score = reader[ScoreText] == DBNull.Value ? null : (int?) reader[ScoreText]
+                                    };
+
+                                    semester.Disciplines.Add(readerDiscipline);
+                                }
+                            }
                         }
                     }
+
+                    reader.Close();
+                }
+                catch (Exception)
+                {
+                    throw;
                 }
             }
 
@@ -113,58 +126,72 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public Student GetById(int id)
         {
-            var statement = this.GetSelectStatement(id);
-            var reader = this.Context.ExecuteQuery(statement);
-
             var student = new Student();
-            while (reader.Read())
+            using (var connection = this.Context.Connection)
             {
-                if (student.Id == default(int))
+                var statement = this.GetSelectStatement(id);
+                var command = new MySqlCommand(statement, connection);
+                try
                 {
-                    student.Id = (int) reader[StudentIdText];
-                    student.Name = reader[StudentNameText].ToString();
-                    student.Surname = reader[StudentSurnameText].ToString();
-                    student.DOB = (DateTime) reader[StudentDOBText];
-                    student.Semesters = new List<Semester>();
-                }
-
-                if (reader[SemesterIdText] != DBNull.Value)
-                {
-                    var semesterId = (int) reader[SemesterIdText];
-                    var semester = student.Semesters.Where(s => s.Id == semesterId).FirstOrDefault();
-                    if (semester == null)
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
                     {
-                        var readerSemester = new Semester()
+                        if (student.Id == default(int))
                         {
-                            Id = semesterId,
-                            Name = reader[SemesterNameText].ToString(),
-                            StartDate = (DateTime) reader[SemesterStartDateText],
-                            EndDate = (DateTime) reader[SemesterEndDateText],
-                            Disciplines = new List<Discipline>()
-                        };
+                            student.Id = (int) reader[StudentIdText];
+                            student.Name = reader[StudentNameText].ToString();
+                            student.Surname = reader[StudentSurnameText].ToString();
+                            student.DOB = (DateTime) reader[StudentDOBText];
+                            student.Semesters = new List<Semester>();
+                        }
 
-                        student.Semesters.Add(readerSemester);
-                        semester = student.Semesters.Last();
-                    }
-
-                    if (reader[DisciplineIdText] != DBNull.Value)
-                    {
-                        var disciplineId = (int) reader[DisciplineIdText];
-                        var discipline = semester.Disciplines.Where(d => d.Id == disciplineId).FirstOrDefault();
-                        if (discipline == null)
+                        if (reader[SemesterIdText] != DBNull.Value)
                         {
-                            var readerDiscipline = new Discipline()
+                            var semesterId = (int) reader[SemesterIdText];
+                            var semester = student.Semesters.Where(s => s.Id == semesterId).FirstOrDefault();
+                            if (semester == null)
                             {
-                                Id = disciplineId,
-                                DisciplineName = reader[DisciplineNameText].ToString(),
-                                ProfessorName = reader[DisciplineProfessorNameText].ToString(),
-                                SemesterId = (int) reader[DisciplineSemesterIdText],
-                                Score = reader[ScoreText] == DBNull.Value ? null : (int?) reader[ScoreText]
-                            };
+                                var readerSemester = new Semester()
+                                {
+                                    Id = semesterId,
+                                    Name = reader[SemesterNameText].ToString(),
+                                    StartDate = (DateTime) reader[SemesterStartDateText],
+                                    EndDate = (DateTime) reader[SemesterEndDateText],
+                                    Disciplines = new List<Discipline>()
+                                };
 
-                            semester.Disciplines.Add(readerDiscipline);
+                                student.Semesters.Add(readerSemester);
+                                semester = student.Semesters.Last();
+                            }
+
+                            if (reader[DisciplineIdText] != DBNull.Value)
+                            {
+                                var disciplineId = (int) reader[DisciplineIdText];
+                                var discipline = semester.Disciplines.Where(d => d.Id == disciplineId).FirstOrDefault();
+                                if (discipline == null)
+                                {
+                                    var readerDiscipline = new Discipline()
+                                    {
+                                        Id = disciplineId,
+                                        DisciplineName = reader[DisciplineNameText].ToString(),
+                                        ProfessorName = reader[DisciplineProfessorNameText].ToString(),
+                                        SemesterId = (int) reader[DisciplineSemesterIdText],
+                                        Score = reader[ScoreText] == DBNull.Value ? null : (int?) reader[ScoreText]
+                                    };
+
+                                    semester.Disciplines.Add(readerDiscipline);
+                                }
+                            }
                         }
                     }
+
+                    reader.Close();
+                }
+                catch (Exception)
+                {
+
+                    throw;
                 }
             }
 
@@ -173,46 +200,68 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public int Add(Student student)
         {
-            var statement = $"INSERT INTO {StudentTableName}(`Name`,`Surname`,`DOB`)VALUES(@Name,@Surname,@DOB);SELECT Id FROM {StudentTableName} WHERE Id = LAST_INSERT_ID();";
-            var parameters = new List<MySqlParameter>()
+            var affectedRows = 0; 
+            int idOfStudent = 0;
+            using (var connection = this.Context.Connection)
             {
-                new MySqlParameter("Name",student.Name),
-                new MySqlParameter("Surname",student.Surname),
-                new MySqlParameter("DOB",student.DOB)
-            };
+                var statement = $"INSERT INTO {StudentTableName}(`Name`,`Surname`,`DOB`)VALUES(@Name,@Surname,@DOB);SELECT Id FROM {StudentTableName} WHERE Id = LAST_INSERT_ID();";
+                var command = new MySqlCommand(statement, connection);
 
-            var reader = this.Context.ExecuteQuery(statement, parameters);
-            var affectedRows = 0;
+                command.Parameters.AddWithValue("Name", student.Name);
+                command.Parameters.AddWithValue("Surname", student.Surname);
+                command.Parameters.AddWithValue("DOB", student.DOB);
+
+                try
+                {
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        idOfStudent = (int) reader["Id"];
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
 
             if (student.Semesters.Count > 0)
             {
-                int idOfStudent = 0;
-                while (reader.Read())
+                using (var connection = this.Context.Connection)
                 {
-                    idOfStudent = (int) reader["Id"];
-                }
+                    var statement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ";
+                    var command = new MySqlCommand(statement, connection);
 
-                var studentSemesterStatement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ";
-                var studentSemesterParameters = new List<MySqlParameter>();
-                for (int i = 0; i < student.Semesters.Count; i++)
-                {
-                    var studentSemesterForAdd = $"({idOfStudent}, @SemesterId{i})";
-                    studentSemesterParameters.Add(new MySqlParameter($"SemesterId{i}", student.Semesters[i].Id));
-
-                    studentSemesterStatement = $"{studentSemesterStatement}{studentSemesterForAdd}";
-                    if (i == student.Semesters.Count - 1)
+                    for (int i = 0; i < student.Semesters.Count; i++)
                     {
-                        studentSemesterStatement = $"{studentSemesterStatement};";
+                        var studentSemesterForAdd = $"({idOfStudent}, @SemesterId{i})";
+                        command.Parameters.AddWithValue($"SemesterId{i}", student.Semesters[i].Id);
+                        statement = $"{statement}{studentSemesterForAdd}";
+                        if (i == student.Semesters.Count - 1)
+                        {
+                            statement = $"{statement};";
+                        }
+                        else
+                        {
+                            statement = $"{statement},";
+                        }
                     }
-                    else
+
+                    try
                     {
-                        studentSemesterStatement = $"{studentSemesterStatement},";
+                        connection.Open();
+                        affectedRows = command.ExecuteNonQuery();
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
                     }
                 }
-
-                this.Context.CloseConnection();
-                this.Context.OpenConnection();
-                affectedRows = this.Context.ExecuteNonQuery(studentSemesterStatement, studentSemesterParameters);
             }
 
             return affectedRows + 1;
@@ -225,8 +274,23 @@ namespace Bit8.StudentSystem.Data.Repository
                 return 0;
             }
 
-            var statement = $"DELETE FROM {StudentSemesterTableName} WHERE StudentId={id} AND SemesterId={semesterId};";
-            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
+            {
+                var statement = $"DELETE FROM {StudentSemesterTableName} WHERE StudentId={id} AND SemesterId={semesterId};";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
             return affectedRows;
         }
 
@@ -237,8 +301,23 @@ namespace Bit8.StudentSystem.Data.Repository
                 return 0;
             }
 
-            var statement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ({id}, {semesterId});";
-            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
+            {
+                var statement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ({id}, {semesterId});";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
             return affectedRows;
         }
 
@@ -249,8 +328,23 @@ namespace Bit8.StudentSystem.Data.Repository
                 return 0;
             }
 
-            var statement = $"INSERT INTO  {ScoreTableName} (`StudentId`,`DisciplineId`,`Score`) VALUES ({id}, {disciplineId}, {score});";
-            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
+            {
+                var statement = $"INSERT INTO  {ScoreTableName} (`StudentId`,`DisciplineId`,`Score`) VALUES ({id}, {disciplineId}, {score});";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
             return affectedRows;
         }
 
@@ -261,8 +355,23 @@ namespace Bit8.StudentSystem.Data.Repository
                 return 0;
             }
 
-            var statement = $"UPDATE {ScoreTableName} SET Score = {score} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
-            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
+            {
+                var statement = $"UPDATE {ScoreTableName} SET Score = {score} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
             return affectedRows;
         }
 
@@ -273,8 +382,23 @@ namespace Bit8.StudentSystem.Data.Repository
                 return 0;
             }
 
-            var statement = $"DELETE FROM {ScoreTableName} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
-            var affectedRows = this.Context.ExecuteNonQuery(statement);
+            var affectedRows = 0;
+            using (var connection = this.Context.Connection)
+            {
+                var statement = $"DELETE FROM {ScoreTableName} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
+                var command = new MySqlCommand(statement, connection);
+                try
+                {
+                    connection.Open();
+                    affectedRows = command.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
             return affectedRows;
         }
 
