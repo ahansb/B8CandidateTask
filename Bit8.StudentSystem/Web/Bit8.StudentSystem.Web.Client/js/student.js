@@ -93,28 +93,24 @@ $(document).ready(function () {
 
     semesterForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        let professorName = $("#professorNameInput").val();
-        if (professorName != originalObject.professorName) {
-            $.ajax({
-                type: "PUT",
-                url: BaseServerUrl + "/discipline/" + originalObject.id,
-                data: JSON.stringify({ professorName }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: (data) => {
-                    window.location.href = BaseUrl + "/disciplines.html";
-                },
-                error: (errMsg) => {
-                    let message = "";
-                    if (errMsg.responseJSON != undefined) {
-                        message = errMsg.responseJSON.message;
-                    }
-                    alert("Status Code " + errMsg.status + " " + message);
+        let semesterForAddingId = +$("#semesterInput").val();
+        $.ajax({
+            type: "POST",
+            url: BaseServerUrl + "/student/" + edittingStudentId + "/semester",
+            data: JSON.stringify({ id: semesterForAddingId }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: (data) => {
+                let link = BaseUrl + '/student.html?id=' + edittingStudentId;
+                window.location.href = link;
+            },
+            error: (errMsg) => {
+                let message = "";
+                if (errMsg.responseJSON != undefined) {
+                    message = errMsg.responseJSON.message;
                 }
-            });
-        } else {
-            window.location.href = BaseUrl + "/disciplines.html";
-        }
-
+                alert("Status Code " + errMsg.status + " " + message);
+            }
+        });
     });
 });

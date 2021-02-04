@@ -81,5 +81,18 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
             this.service.DeleteStudentSemester(id, semesterId);
             return Ok(new { message = "Successfully deleted." });
         }
+
+        // POST api/<StudentController>/5/semester
+        [HttpPost("{id}/semester")]
+        public IActionResult Post(int id, [FromBody] StudentSemesterCreateModel model)
+        {
+            if (id <= 0 || model == null || model.Id <= 0)
+            {
+                return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            this.service.AddStudentSemester(id, model);
+            return Ok(new { message = "Successfully created." });
+        }
     }
 }
