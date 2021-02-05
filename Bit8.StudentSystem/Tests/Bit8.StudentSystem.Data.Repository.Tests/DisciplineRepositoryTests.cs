@@ -20,7 +20,6 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
             this.ApplicationDbContext = new ApplicationDbContext(Configuration["ConnectionStrings:ApplicationDbContext"]);
             this.ApplicationDbContext.Initialize();
             this.repository = new DisciplineRepository(this.ApplicationDbContext);
-
         }
 
         [Fact]
@@ -156,10 +155,11 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
             var addedDiscipline = new DisciplineCreateModel() { DisciplineName = "NewDiscipline", ProfessorName = "Professore", SemesterId = 1 };
             var affectedRows = this.repository.Add(addedDiscipline);
             Assert.Equal(1, affectedRows);
-            long count = 0;
+
+            var dbDiscipline = new Discipline();
             using (var connection = this.ApplicationDbContext.Connection)
             {
-                var statement = $"SELECT  COUNT(*) as Count  FROM {this.DisciplineTableName};";
+                var statement = $"SELECT  * FROM {this.DisciplineTableName} WHERE Id = 13";
                 var command = new MySqlCommand(statement, connection);
 
                 connection.Open();
@@ -167,13 +167,20 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
 
                 while (reader.Read())
                 {
-                    count = (long) reader["Count"];
+                    dbDiscipline.Id = (int) reader["Id"];
+                    dbDiscipline.DisciplineName = reader["DisciplineName"].ToString();
+                    dbDiscipline.ProfessorName = reader["ProfessorName"].ToString();
+                    dbDiscipline.SemesterId = (int) reader["SemesterId"];
                 }
 
                 reader.Close();
             }
 
-            Assert.Equal(13, count);
+            Assert.Equal(13, dbDiscipline.Id);
+            Assert.Equal(addedDiscipline.DisciplineName, dbDiscipline.DisciplineName);
+            Assert.Equal(addedDiscipline.ProfessorName, dbDiscipline.ProfessorName);
+            Assert.Equal(addedDiscipline.SemesterId, dbDiscipline.SemesterId);
+
         }
     }
 }
