@@ -29,12 +29,12 @@ namespace Bit8.StudentSystem.Data
 
         private void SeedData()
         {
-            this.ExecuteSql("SeedTables.txt");
+            this.ExecuteSql("SeedTables.sql");
         }
 
         private void CreateTables()
         {
-            this.ExecuteSql("CreateTables.txt");
+            this.ExecuteSql("CreateTables.sql");
         }
 
         private void ExecuteSql(string sqlName)
