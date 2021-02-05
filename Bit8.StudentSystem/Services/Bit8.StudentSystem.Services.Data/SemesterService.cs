@@ -29,39 +29,13 @@ namespace Bit8.StudentSystem.Services.Data
 
         public int Create(SemesterCreateModel model)
         {
-            var semester = new Semester()
-            {
-                Name = model.Name,
-                StartDate = model.StartDate,
-                EndDate = model.EndDate,
-                Disciplines = new List<Discipline>()
-            };
-
-            foreach (var disciplineModel in model.Disciplines)
-            {
-                var discipline = new Discipline()
-                {
-                    DisciplineName = disciplineModel.DisciplineName,
-                    ProfessorName = disciplineModel.ProfessorName
-                };
-
-                semester.Disciplines.Add(discipline);
-            }
-
-            var affectedRows = this.repository.Add(semester);
-
+            var affectedRows = this.repository.Add(model);
             return affectedRows;
         }
 
         public int Edit(int id, SemesterEditModel model)
         {
-            var semester = new Semester()
-            {
-                Name = model.Name,
-                StartDate = model.StartDate,
-                EndDate = model.EndDate
-            };
-            var affectedRows = this.repository.Update(id, semester);
+            var affectedRows = this.repository.Update(id, model);
             return affectedRows;
         }
     }

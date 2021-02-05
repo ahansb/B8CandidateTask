@@ -35,14 +35,7 @@ namespace Bit8.StudentSystem.Services.Data
 
         public int Create(DisciplineCreateModel model)
         {
-            //TODO: Check Semester if exists
-            var affectedRows = this.repository.Add(new Discipline()
-            {
-                DisciplineName = model.DisciplineName,
-                ProfessorName = model.ProfessorName,
-                SemesterId = model.SemesterId
-            });
-
+            var affectedRows = this.repository.Add(model);
             return affectedRows;
         }
 

@@ -29,20 +29,7 @@ namespace Bit8.StudentSystem.Services.Data
 
         public int Create(StudentCreateModel model)
         {
-            var student = new Student()
-            {
-                Name = model.Name,
-                Surname = model.Surname,
-                DOB = model.DOB,
-                Semesters = new List<Semester>()
-            };
-
-            foreach (var semesterId in model.Semesters)
-            {
-                student.Semesters.Add(new Semester() { Id = semesterId });
-            }
-
-            var affectedRows = this.repository.Add(student);
+            var affectedRows = this.repository.Add(model);
             return affectedRows;
         }
 

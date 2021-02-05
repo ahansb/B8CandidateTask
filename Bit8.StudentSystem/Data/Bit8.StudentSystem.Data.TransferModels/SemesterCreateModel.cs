@@ -12,6 +12,6 @@ namespace Bit8.StudentSystem.Data.TransferModels
 
         public DateTime EndDate { get; set; }
 
-        public ICollection<SemesterDisciplineCreateModel> Disciplines { get; set; }
+        public List<SemesterDisciplineCreateModel> Disciplines { get; set; }
     }
 }

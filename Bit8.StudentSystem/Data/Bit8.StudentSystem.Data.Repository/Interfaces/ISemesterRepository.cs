@@ -7,8 +7,8 @@ namespace Bit8.StudentSystem.Data.Repository.Interfaces
     public interface ISemesterRepository
     {
         ICollection<Semester> All();
-        int Add(Semester semester);
+        int Add(SemesterCreateModel semester);
         Semester GetById(int id);
-        int Update(int id, Semester semester);
+        int Update(int id, SemesterEditModel semester);
     }
 }

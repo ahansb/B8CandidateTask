@@ -133,7 +133,7 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             return semester;
         }
 
-        public int Add(Semester semester)
+        public int Add(SemesterCreateModel semester)
         {
             var affectedRows = 0;
             int idOfSemester = 0;
@@ -203,7 +203,7 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             return affectedRows + 1;
         }
 
-        public int Update(int id, Semester semester)
+        public int Update(int id, SemesterEditModel semester)
         {
             var affectedRows = 0;
             using (var connection = this.Context.Connection)

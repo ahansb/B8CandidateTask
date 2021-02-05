@@ -8,7 +8,7 @@ namespace Bit8.StudentSystem.Data.Repository.Interfaces
     {
         ICollection<Student> All();
         Student GetById(int id);
-        int Add(Student student);
+        int Add(StudentCreateModel student);
         int DeleteStudentSemester(int id, int semesterId);
         int AddStudentSemester(int id, int semesterId);
         int AddStudentDisciplineScore(int id, int disciplineId, int score);

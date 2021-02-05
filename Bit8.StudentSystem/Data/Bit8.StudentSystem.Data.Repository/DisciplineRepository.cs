@@ -75,7 +75,7 @@ namespace Bit8.StudentSystem.Data.Repository
             return discipline;
         }
 
-        public int Add(Discipline discipline)
+        public int Add(DisciplineCreateModel discipline)
         {
             var affectedRows = 0;
             using (var connection = this.Context.Connection)

@@ -197,7 +197,7 @@ namespace Bit8.StudentSystem.Data.Repository
             return student;
         }
 
-        public int Add(Student student)
+        public int Add(StudentCreateModel student)
         {
             var affectedRows = 0; 
             int idOfStudent = 0;
@@ -238,7 +238,7 @@ namespace Bit8.StudentSystem.Data.Repository
                     for (int i = 0; i < student.Semesters.Count; i++)
                     {
                         var studentSemesterForAdd = $"({idOfStudent}, @SemesterId{i})";
-                        command.Parameters.AddWithValue($"SemesterId{i}", student.Semesters[i].Id);
+                        command.Parameters.AddWithValue($"SemesterId{i}", student.Semesters[i]);
                         statement = $"{statement}{studentSemesterForAdd}";
                         if (i == student.Semesters.Count - 1)
                         {
