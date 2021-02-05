@@ -18,14 +18,13 @@ $(document).ready(function () {
             data.disciplines.forEach(discipline => {
                 let disciplineDeleteId = "deleteDiscipline" + discipline.id;
                 let item = "<li>Id: " + discipline.id + ", Name: " + discipline.disciplineName + ", Professor: " + discipline.professorName
-                    + " - <a class='deleteButton' id='" + disciplineDeleteId + "'href='' data-id='" + discipline.id + "'> Delete</a></li>";
+                    + " - <a class='deleteButton' id='" + disciplineDeleteId + "'href='javascript:void(0);' data-id='" + discipline.id + "'> Delete</a></li>";
 
                 disciplinesList.html(disciplinesList.html() + item);
             });
 
             $("a.deleteButton").click(function () {
                 var disciplineForDeleteId = $(this).data("id");
-                debugger;
                 $.ajax({
                     type: "DELETE",
                     url: BaseServerUrl + "/discipline/" + disciplineForDeleteId,
