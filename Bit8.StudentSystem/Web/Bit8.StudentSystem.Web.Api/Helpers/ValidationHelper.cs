@@ -28,9 +28,21 @@ namespace Bit8.StudentSystem.Web.Api.Helpers
             }
         }
 
+        public bool ValidateDate(DateTime date)
+        {
+            if (date == default(DateTime))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         public bool ValidateDates(DateTime start, DateTime end)
         {
-            if (start == default(DateTime) || end == default(DateTime) || start == null || end == null || start > end)
+            if (start == default(DateTime) || end == default(DateTime) || start > end)
             {
                 return false;
             }

@@ -40,14 +40,18 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] SemesterCreateModel model)
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Name) || !this.CheckDate( model.StartDate.ToString() ) || !this.CheckDate(model.EndDate.ToString()))
+            if (!this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateRequiredStringProperty(model.Name)
+                || !this.Validator.ValidateDates(model.StartDate, model.EndDate))
             {
                 return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             foreach (var discipline in model.Disciplines)
             {
-                if (discipline == null || string.IsNullOrWhiteSpace(discipline.DisciplineName) || string.IsNullOrWhiteSpace(discipline.ProfessorName))
+                if (!this.Validator.ValidateObject(discipline) 
+                    || !this.Validator.ValidateRequiredStringProperty(discipline.DisciplineName) 
+                    || !this.Validator.ValidateRequiredStringProperty(discipline.ProfessorName))
                 {
                     return BadRequest(new { message = "Bad discipline parameters passed!" });
                 }
@@ -61,7 +65,9 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] SemesterEditModel model)
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Name))
+            if (!this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateRequiredStringProperty(model.Name)
+                || !this.Validator.ValidateDates(model.StartDate, model.EndDate))
             {
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
@@ -70,23 +76,11 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
             return Ok(new { message = "Successfully updated." });
         }
 
-        // DELETE api/<SemesterController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        private bool CheckDate(String date)
-        {
-            try
-            {
-                DateTime dt = DateTime.Parse(date);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+        //TODO:Do I need this?
+        //// DELETE api/<SemesterController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }
