@@ -46,7 +46,7 @@ namespace Bit8.StudentSystem.Data.Repository
             }
             else
             {
-                text = $"{ex.Message} - Inner: {ex.InnerException.Message}";
+                text = $"[ERROR] - {ex.Message} - Inner: {ex.InnerException.Message}";
             }
 
             return text;
