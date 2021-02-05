@@ -180,7 +180,115 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
             Assert.Equal(addedDiscipline.DisciplineName, dbDiscipline.DisciplineName);
             Assert.Equal(addedDiscipline.ProfessorName, dbDiscipline.ProfessorName);
             Assert.Equal(addedDiscipline.SemesterId, dbDiscipline.SemesterId);
+        }
 
+        [Theory]
+        [InlineData(null,0)]
+        [InlineData("Normal name", 1)]
+        [InlineData("Very Very Long Name Very Very Long Name Very Very Long Name ", 0)]
+        public void Update_ShouldReturn_CorrectValue(string professorName, int expectedReturn)
+        {
+            int id = 3;
+            var affectedRows = this.repository.Update(id, professorName);
+            Assert.Equal(expectedReturn, affectedRows);
+        }
+
+        //TODO: Check rest of the properties
+        [Fact]
+        public void Update_ShouldChange_Discipline()
+        {
+            int id = 3;
+            var professorName = "New Name Of Professor";
+            var affectedRows = this.repository.Update(id, professorName);
+
+            var dbDiscipline = new Discipline();
+            using (var connection = this.ApplicationDbContext.Connection)
+            {
+                var statement = $"SELECT  * FROM {this.DisciplineTableName} WHERE Id = {id}";
+                var command = new MySqlCommand(statement, connection);
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    dbDiscipline.Id = (int) reader["Id"];
+                    dbDiscipline.DisciplineName = reader["DisciplineName"].ToString();
+                    dbDiscipline.ProfessorName = reader["ProfessorName"].ToString();
+                    dbDiscipline.SemesterId = (int) reader["SemesterId"];
+                }
+
+                reader.Close();
+            }
+
+            Assert.Equal(1, affectedRows);
+            Assert.Equal(id, dbDiscipline.Id);
+            Assert.Equal(professorName, dbDiscipline.ProfessorName);
+        }
+
+        [Fact]
+        public void Delete_ShouldRemove_Discpiline()
+        {
+            int id = 0;
+
+            using (var connection = this.ApplicationDbContext.Connection)
+            {
+                var statement = $"INSERT INTO  {this.DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ('NewDisciplineName', 'NewProfessorName', 1);";
+                statement = $"{statement} SELECT Id FROM {this.DisciplineTableName} WHERE Id = LAST_INSERT_ID();";
+                var command = new MySqlCommand(statement, connection);
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    id = (int) reader["Id"];
+                }
+
+                reader.Close();
+            }
+
+            Assert.Equal(13, id);
+
+            var affectedRows = this.repository.Delete(id);
+
+            var hasDiscipline = false;
+            using (var connection = this.ApplicationDbContext.Connection)
+            {
+                var statement = $"SELECT  * FROM {this.DisciplineTableName} WHERE Id = {id}";
+                var command = new MySqlCommand(statement, connection);
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    hasDiscipline = true;
+                }
+
+                reader.Close();
+            }
+
+            long count = 0;
+            using (var connection = this.ApplicationDbContext.Connection)
+            {
+                var statement = $"SELECT  COUNT(*) as Count FROM {this.DisciplineTableName};";
+                var command = new MySqlCommand(statement, connection);
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    count = (long)reader["Count"];
+                }
+
+                reader.Close();
+            }
+
+            Assert.Equal(1, affectedRows);
+            Assert.False(hasDiscipline);
+            Assert.Equal(12, count);
         }
     }
 }
