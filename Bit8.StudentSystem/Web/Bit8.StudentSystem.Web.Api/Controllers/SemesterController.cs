@@ -11,7 +11,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SemesterController : ControllerBase
+    public class SemesterController : BaseController
     {
         private readonly ISemesterService semesterService;
 

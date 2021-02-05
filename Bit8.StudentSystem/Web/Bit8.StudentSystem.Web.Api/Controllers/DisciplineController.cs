@@ -9,7 +9,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DisciplineController : ControllerBase
+    public class DisciplineController : BaseController
     {
         private readonly IDisciplineService disciplineService;
 

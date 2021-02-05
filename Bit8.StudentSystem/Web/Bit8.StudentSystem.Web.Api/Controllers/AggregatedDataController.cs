@@ -6,7 +6,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AggregatedDataController : ControllerBase
+    public class AggregatedDataController : BaseController
     {
         private readonly IAggregatedDataService service;
 

@@ -9,7 +9,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentController : BaseController
     {
         private readonly IStudentService service;
 
@@ -43,32 +43,43 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] StudentCreateModel model)
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.Surname))
+            if (!this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateRequiredStringProperty(model.Name)
+                || !this.Validator.ValidateRequiredStringProperty(model.Surname)
+                || !this.Validator.ValidateObject(model.Semesters))
             {
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
+            }
+
+            foreach (var semesterId in model.Semesters)
+            {
+                if (this.Validator.ValidateId(semesterId))
+                {
+                    return BadRequest(new { message = "Bad discipline parameters passed!" });
+                }
             }
 
             this.service.Create(model);
             return Ok(new { message = "Successfully created." });
         }
 
-        // PUT api/<StudentController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //// PUT api/<StudentController>/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
-        // DELETE api/<StudentController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/<StudentController>/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
 
         // DELETE api/<StudentController>/5/semester/3
         [HttpDelete("{id}/semester/{semesterId}")]
         public IActionResult DeleteStudentSemester(int id, int semesterId)
         {
-            if (id <= 0 || semesterId <= 0)
+            if (!this.Validator.ValidateId(id) || !this.Validator.ValidateId(semesterId))
             {
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
@@ -81,7 +92,9 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPost("{id}/semester")]
         public IActionResult AddStudentSemester(int id, [FromBody] StudentSemesterCreateModel model)
         {
-            if (id <= 0 || model == null || model.Id <= 0)
+            if (!this.Validator.ValidateId(id)
+                || !this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateId(model.Id))
             {
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
@@ -94,7 +107,10 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPost("{id}/disciplineScore")]
         public IActionResult SetStudentScore(int id, [FromBody] StudentDisciplineScore model)
         {
-            if (id <= 0 || model == null || model.DisciplineId <= 0 || model.Score <= 0)
+            if (!this.Validator.ValidateId(id)
+                || !this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateId(model.DisciplineId)
+                || !this.Validator.ValidateScore(model.Score))
             {
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
@@ -107,7 +123,10 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPut("{id}/disciplineScore")]
         public IActionResult EditStudentScore(int id, [FromBody] StudentDisciplineScore model)
         {
-            if (id <= 0 || model == null || model.DisciplineId <= 0 || model.Score <= 0)
+            if (!this.Validator.ValidateId(id)
+                || !this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateId(model.DisciplineId)
+                || !this.Validator.ValidateScore(model.Score))
             {
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
@@ -120,7 +139,9 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpDelete("{id}/disciplineScore")]
         public IActionResult DeleteStudentScore(int id, [FromBody] DeleteStudentDisciplineScore model)
         {
-            if (id <= 0 || model == null || model.DisciplineId <= 0)
+            if (!this.Validator.ValidateId(id)
+                || !this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateId(model.DisciplineId))
             {
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }

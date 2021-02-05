@@ -80,7 +80,6 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             return semesters;
         }
 
-        //TODO: 1 query
         public Semester GetById(int id)
         {
             var semester = new Semester();
