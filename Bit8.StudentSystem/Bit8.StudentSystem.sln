@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bit8.StudentSystem.Data.Rep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bit8.StudentSystem.Data.TransferModels", "Data\Bit8.StudentSystem.Data.TransferModels\Bit8.StudentSystem.Data.TransferModels.csproj", "{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{99BB490A-0874-4970-8BC2-8F25EA23AFBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bit8.StudentSystem.Data.Repository.Tests", "Tests\Bit8.StudentSystem.Data.Repository.Tests\Bit8.StudentSystem.Data.Repository.Tests.csproj", "{CD37DD36-1D1E-4DAE-A76C-6A1E38E5BFD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,10 @@ Global
 		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD37DD36-1D1E-4DAE-A76C-6A1E38E5BFD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD37DD36-1D1E-4DAE-A76C-6A1E38E5BFD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD37DD36-1D1E-4DAE-A76C-6A1E38E5BFD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD37DD36-1D1E-4DAE-A76C-6A1E38E5BFD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +63,7 @@ Global
 		{CA96B191-32DD-44D8-880F-D774B66537FA} = {5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}
 		{02340633-D8B7-4B50-9BA0-2398C99B3951} = {5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}
 		{5B4D8DF0-5DD4-4AF4-9ECC-34A658832694} = {5C6EA514-0F71-4120-B1A3-D4BFE00E8A2C}
+		{CD37DD36-1D1E-4DAE-A76C-6A1E38E5BFD0} = {99BB490A-0874-4970-8BC2-8F25EA23AFBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C1DF6F55-5DE0-43FC-8776-4E8310DF6A60}

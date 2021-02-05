@@ -11,11 +11,12 @@ namespace Bit8.StudentSystem.Data
     public class ApplicationDbContext : IApplicationDbContext
     {
         private readonly string connectionString;
-        private const string BasePath = @"..\..\Data\Bit8.StudentSystem.Data\SQLs\";
+        private readonly string basePath;
 
         public ApplicationDbContext(string connectionString)
         {
             this.connectionString = connectionString;
+            basePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\..\Data\Bit8.StudentSystem.Data\SQLs\"));
         }
 
         public MySqlConnection Connection { get { return new MySqlConnection(this.connectionString); } }
@@ -40,12 +41,14 @@ namespace Bit8.StudentSystem.Data
         private void ExecuteSql(string sqlName)
         {
             var statement = string.Empty;
-            var path = $"{BasePath}{sqlName}";
+            var path = $"{basePath}{sqlName}";
 
             if (File.Exists(path))
             {
                 statement = File.ReadAllText(path);
             }
+
+            statement = statement.Replace("`bit8studentsystem`", $"`{this.GetDatabaseName(this.connectionString)}`");
 
             using (var connection = this.Connection)
             {

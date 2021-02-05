@@ -63,19 +63,6 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
             return this.BuildNonQueryResponse(affectedRows);
         }
 
-        //TODO: Do I need this?
-        //// PUT api/<StudentController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<StudentController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
-
         // DELETE api/<StudentController>/5/semester/3
         [HttpDelete("{id}/semester/{semesterId}")]
         public IActionResult DeleteStudentSemester(int id, int semesterId)
