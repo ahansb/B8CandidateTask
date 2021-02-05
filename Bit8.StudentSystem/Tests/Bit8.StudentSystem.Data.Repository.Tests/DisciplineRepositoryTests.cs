@@ -14,14 +14,12 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
 {
     public class DisciplineRepositoryTests : BaseRepositoryTest
     {
-
-        private readonly IApplicationDbContext applicationDbContext;
         private readonly IDisciplineRepository repository;
         public DisciplineRepositoryTests()
         {
-            this.applicationDbContext = new ApplicationDbContext(Configuration["ConnectionStrings:ApplicationDbContext"]);
-            this.applicationDbContext.Initialize();
-            this.repository = new DisciplineRepository(this.applicationDbContext);
+            this.ApplicationDbContext = new ApplicationDbContext(Configuration["ConnectionStrings:ApplicationDbContext"]);
+            this.ApplicationDbContext.Initialize();
+            this.repository = new DisciplineRepository(this.ApplicationDbContext);
 
         }
 
@@ -62,10 +60,10 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
         public void GetById_ShouldReturn_TheRightDiscipline(int id)
         {
             Discipline dbDiscipline = null;
-            using (var connection = this.applicationDbContext.Connection)
+            using (var connection = this.ApplicationDbContext.Connection)
             {
-                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {applicationDbContext.GetDatabaseName()}.discipline d";
-                   statement += $"{statement} LEFT JOIN {applicationDbContext.GetDatabaseName()}.semester s ON s.Id = d.SemesterId WHERE d.Id = {id};";
+                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {this.DisciplineTableName} d";
+                   statement = $"{statement} LEFT JOIN {this.SemesterTableName} s ON s.Id = d.SemesterId WHERE d.Id = {id};";
                 var command = new MySqlCommand(statement, connection);
 
                 connection.Open();
@@ -133,9 +131,9 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
             var affectedRows = this.repository.Add(addedDiscipline);
             Assert.Equal(1, affectedRows);
             long count = 0;
-            using (var connection = this.applicationDbContext.Connection)
+            using (var connection = this.ApplicationDbContext.Connection)
             {
-                var statement = $"SELECT  COUNT(*) as Count  FROM {applicationDbContext.GetDatabaseName()}.discipline;";
+                var statement = $"SELECT  COUNT(*) as Count  FROM {this.DisciplineTableName};";
                 var command = new MySqlCommand(statement, connection);
 
                 connection.Open();
@@ -159,9 +157,9 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
             var affectedRows = this.repository.Add(addedDiscipline);
             Assert.Equal(1, affectedRows);
             long count = 0;
-            using (var connection = this.applicationDbContext.Connection)
+            using (var connection = this.ApplicationDbContext.Connection)
             {
-                var statement = $"SELECT  COUNT(*) as Count  FROM {applicationDbContext.GetDatabaseName()}.discipline;";
+                var statement = $"SELECT  COUNT(*) as Count  FROM {this.DisciplineTableName};";
                 var command = new MySqlCommand(statement, connection);
 
                 connection.Open();
