@@ -38,7 +38,10 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] DisciplineCreateModel model)
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.DisciplineName) || string.IsNullOrWhiteSpace(model.ProfessorName) || model.SemesterId <= 0)
+            if (!this.Validator.ValidateObject(model)
+                || !this.Validator.ValidateRequiredStringProperty(model.DisciplineName)
+                || !this.Validator.ValidateRequiredStringProperty(model.ProfessorName)
+                || !this.Validator.ValidateId(model.SemesterId))
             {
                 return BadRequest(new { message = "Bad parameters passed!" });
             }
@@ -51,7 +54,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] DisciplineEditModel model)
         {
-            if (id <= 0 || model == null || string.IsNullOrWhiteSpace(model.ProfessorName))
+            if (!this.Validator.ValidateObject(model)
+               || !this.Validator.ValidateRequiredStringProperty(model.ProfessorName))
             {
                 return BadRequest(new { message = "Bad parameters passed!" });
             }
@@ -64,7 +68,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            if (id < 1)
+            if (!this.Validator.ValidateId(id))
             {
                 return BadRequest(new { message = "Bad parameters passed!" });
             }
