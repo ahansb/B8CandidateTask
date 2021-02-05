@@ -28,3 +28,7 @@ a.disabled {
     pointer-events: none;
     color: #ccc;
 }
+
+.inline{
+    display: inline;
+}

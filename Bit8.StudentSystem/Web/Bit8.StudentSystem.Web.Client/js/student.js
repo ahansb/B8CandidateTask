@@ -147,7 +147,7 @@
     });
 
     function getScoreInput(disciplineId, score) {
-        let scoreInput = "<form id='scoreForm-" + disciplineId + "' class='scoreForm'>";
+        let scoreInput = "<form id='scoreForm-" + disciplineId + "' class='scoreForm inline'>";
         scoreInput += "<label for='disciplineScore" + disciplineId + "'>Score: </label>"
         scoreInput += "<input type='number' id='disciplineScore" + disciplineId + "' value='" + score + "' required/>";
         let actionButton = "";
