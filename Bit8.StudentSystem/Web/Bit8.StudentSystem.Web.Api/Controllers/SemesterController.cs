@@ -57,8 +57,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 }
             }
             
-            this.semesterService.Create(model);
-            return Ok(new { message = "Successfully created." });
+            var affectedRows = this.semesterService.Create(model);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         // PUT api/<SemesterController>/5
@@ -72,8 +72,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
 
-            this.semesterService.Edit(id, model);
-            return Ok(new { message = "Successfully updated." });
+            var affectedRows = this.semesterService.Edit(id, model);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         //TODO:Do I need this?

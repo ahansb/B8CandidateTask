@@ -59,8 +59,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 }
             }
 
-            this.service.Create(model);
-            return Ok(new { message = "Successfully created." });
+            var affectedRows = this.service.Create(model);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         //TODO: Do I need this?
@@ -100,8 +100,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
 
-            this.service.AddStudentSemester(id, model);
-            return Ok(new { message = "Successfully created." });
+            var affectedRows = this.service.AddStudentSemester(id, model);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         // POST api/<StudentController>/5/disciplineScore
@@ -116,8 +116,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
 
-            this.service.AddStudentDisciplineScore(id, model);
-            return Ok(new { message = "Successfully created." });
+            var affectedRows = this.service.AddStudentDisciplineScore(id, model);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         // PUT api/<StudentController>/5/disciplineScore
@@ -132,8 +132,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
 
-            this.service.EditStudentDisciplineScore(id, model);
-            return Ok(new { message = "Successfully created." });
+            var affectedRows = this.service.EditStudentDisciplineScore(id, model);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         // PUT api/<StudentController>/5/disciplineScore
@@ -147,8 +147,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
 
-            this.service.DeleteStudentDisciplineScore(id, model);
-            return Ok(new { message = "Successfully created." });
+            var affectedRows = this.service.DeleteStudentDisciplineScore(id, model);
+            return this.BuildNonQueryResponse(affectedRows);
         }
     }
 }

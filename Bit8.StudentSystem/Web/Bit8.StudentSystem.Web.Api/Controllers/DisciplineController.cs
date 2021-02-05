@@ -60,8 +60,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad parameters passed!" });
             }
 
-            this.disciplineService.Edit(id, model.ProfessorName);
-            return Ok(new { message = "Successfully updated." });
+            var affectedRows = this.disciplineService.Edit(id, model.ProfessorName);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         // DELETE api/<DisciplineController>/5
