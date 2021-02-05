@@ -77,26 +77,30 @@ $(document).ready(function () {
         let startDate = $("#startDateInput").val();
         let endDate = $("#endDateInput").val();
 
-        if (name != originalObject.name || startDate != originalObject.startDate || endDate != originalObject.endDate) {
-            $.ajax({
-                type: "PUT",
-                url: BaseServerUrl + "/semester/" + originalObject.id,
-                data: JSON.stringify({ name, startDate, endDate }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: (data) => {
-                    window.location.href = BaseUrl + "/semesters.html";
-                },
-                error: (errMsg) => {
-                    let message = "";
-                    if (errMsg.responseJSON != undefined) {
-                        message = errMsg.responseJSON.message;
+        if (semester.endDate > semester.startDate) {
+            if (name != originalObject.name || startDate != originalObject.startDate || endDate != originalObject.endDate) {
+                $.ajax({
+                    type: "PUT",
+                    url: BaseServerUrl + "/semester/" + originalObject.id,
+                    data: JSON.stringify({ name, startDate, endDate }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: (data) => {
+                        window.location.href = BaseUrl + "/semesters.html";
+                    },
+                    error: (errMsg) => {
+                        let message = "";
+                        if (errMsg.responseJSON != undefined) {
+                            message = errMsg.responseJSON.message;
+                        }
+                        alert("Status Code " + errMsg.status + " " + message);
                     }
-                    alert("Status Code " + errMsg.status + " " + message);
-                }
-            });
+                });
+            } else {
+                window.location.href = BaseUrl + "/semesters.html";
+            }
         } else {
-            window.location.href = BaseUrl + "/semesters.html";
+            alert("Start date should be lower than the end date!");
         }
     });
 });

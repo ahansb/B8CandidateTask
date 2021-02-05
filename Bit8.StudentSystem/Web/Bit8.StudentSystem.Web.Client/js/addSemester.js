@@ -7,24 +7,28 @@ $(document).ready(function () {
         semester.startDate = $("#startDateInput").val();
         semester.endDate = $("#endDateInput").val();
 
-        $.ajax({
-            type: "POST",
-            url: BaseServerUrl + "/semester",
-            data: JSON.stringify(semester),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: (data) => {
-                window.location.href = BaseUrl + "/semesters.html";
-            },
-            error: (errMsg) => {
-                debugger;
-                let message = "";
-                if (errMsg.responseJSON != undefined) {
-                    message = errMsg.responseJSON.message;
+        if (semester.endDate > semester.startDate) {
+            $.ajax({
+                type: "POST",
+                url: BaseServerUrl + "/semester",
+                data: JSON.stringify(semester),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: (data) => {
+                    window.location.href = BaseUrl + "/semesters.html";
+                },
+                error: (errMsg) => {
+                    debugger;
+                    let message = "";
+                    if (errMsg.responseJSON != undefined) {
+                        message = errMsg.responseJSON.message;
+                    }
+                    alert("Status Code " + errMsg.status + " " + message);
                 }
-                alert("Status Code " + errMsg.status + " " + message);
-            }
-        });
+            });
+        } else {
+            alert("Start date should be lower than the end date!");
+        }
     });
 
     disciplineForm.addEventListener("submit", (event) => {
