@@ -70,10 +70,9 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
 
                     reader.Close();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 
@@ -123,10 +122,9 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
 
                     reader.Close();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 
@@ -154,10 +152,9 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
                         idOfSemester = (int) reader["Id"];
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
 
             }
@@ -192,10 +189,9 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
                         connection.Open();
                         affectedRows = command.ExecuteNonQuery();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
-                        throw;
+                        this.Log(this.GetExceptionText(ex));
                     }
                 }
             }
@@ -220,10 +216,9 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
                     connection.Open();
                     affectedRows = command.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 

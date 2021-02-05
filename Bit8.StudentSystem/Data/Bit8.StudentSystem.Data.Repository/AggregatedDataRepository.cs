@@ -52,9 +52,9 @@ LIMIT 10;";
 
                     reader.Close();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 
@@ -137,9 +137,9 @@ ORDER BY st.Name, st.Surname, sem.Name, d.Id;";
 
                     reader.Close();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 

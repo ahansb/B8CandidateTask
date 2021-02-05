@@ -40,8 +40,7 @@ namespace Bit8.StudentSystem.Data.Repository
                 }
                 catch (Exception ex)
                 {
-
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 
@@ -68,7 +67,7 @@ namespace Bit8.StudentSystem.Data.Repository
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 
@@ -93,7 +92,7 @@ namespace Bit8.StudentSystem.Data.Repository
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 
@@ -116,7 +115,7 @@ namespace Bit8.StudentSystem.Data.Repository
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 
