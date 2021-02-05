@@ -132,55 +132,6 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             }
 
             return semester;
-            //Semester semester = new Semester();
-            //using (var connection = this.Context.Connection)
-            //{
-            //    var statement = $"SELECT * FROM {SemesterTableName} WHERE Id = {id};";
-            //    var command = new MySqlCommand(statement, connection);
-            //    try
-            //    {
-            //        connection.Open();
-            //        var reader = command.ExecuteReader();
-            //        while (reader.Read())
-            //        {
-            //            semester = this.MapReaderToSemester(reader);
-            //        }
-
-            //        reader.Close();
-            //    }
-            //    catch (Exception ex)
-            //    {
-
-            //        throw;
-            //    }
-            //}
-
-            //List<Discipline> disciplines = new List<Discipline>();
-            //using (var connection = this.Context.Connection)
-            //{
-            //    var statement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
-            //    var command = new MySqlCommand(statement, connection);
-            //    try
-            //    {
-            //        connection.Open();
-            //        var reader = command.ExecuteReader();
-            //        while (reader.Read())
-            //        {
-            //            var discipline = this.MapReaderToDiscipline(reader);
-            //            disciplines.Add(discipline);
-            //        }
-
-            //        reader.Close();
-            //    }
-            //    catch (Exception ex)
-            //    {
-
-            //        throw;
-            //    }
-            //}
-
-            //semester.Disciplines = disciplines;
-            //return semester;
         }
 
         public int Add(Semester semester)
