@@ -172,10 +172,9 @@ namespace Bit8.StudentSystem.Data.Repository
 
                     for (int i = 0; i < semester.Disciplines.Count; i++)
                     {
-                        var disciplineForAdd = $"(@DisciplineName{i}, @ProfessorName{i}, @SemesterId{i})";
+                        var disciplineForAdd = $"(@DisciplineName{i}, @ProfessorName{i}, {idOfSemester})";
                         command.Parameters.AddWithValue($"DisciplineName{i}", semester.Disciplines[i].DisciplineName);
                         command.Parameters.AddWithValue($"ProfessorName{i}", semester.Disciplines[i].ProfessorName);
-                        command.Parameters.AddWithValue($"SemesterId{i}", idOfSemester);
 
                         statement = $"{statement}{disciplineForAdd}";
                         if (i == semester.Disciplines.Count - 1)
@@ -188,6 +187,7 @@ namespace Bit8.StudentSystem.Data.Repository
                         }
                     }
 
+                    command.CommandText = statement;
                     try
                     {
                         connection.Open();

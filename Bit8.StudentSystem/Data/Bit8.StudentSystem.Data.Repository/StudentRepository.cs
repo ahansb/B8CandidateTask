@@ -250,6 +250,8 @@ namespace Bit8.StudentSystem.Data.Repository
                         }
                     }
 
+                    command.CommandText = statement;
+
                     try
                     {
                         connection.Open();
