@@ -69,18 +69,11 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 || !this.Validator.ValidateRequiredStringProperty(model.Name)
                 || !this.Validator.ValidateDates(model.StartDate, model.EndDate))
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             var affectedRows = this.semesterService.Edit(id, model);
             return this.BuildNonQueryResponse(affectedRows);
         }
-
-        //TODO:Do I need this?
-        //// DELETE api/<SemesterController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

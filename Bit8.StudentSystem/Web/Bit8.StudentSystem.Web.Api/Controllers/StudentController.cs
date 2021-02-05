@@ -32,7 +32,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             var result = this.service.GetById(id);
@@ -48,14 +48,14 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 || !this.Validator.ValidateRequiredStringProperty(model.Surname)
                 || !this.Validator.ValidateObject(model.Semesters))
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             foreach (var semesterId in model.Semesters)
             {
-                if (this.Validator.ValidateId(semesterId))
+                if (!this.Validator.ValidateId(semesterId))
                 {
-                    return BadRequest(new { message = "Bad discipline parameters passed!" });
+                    return BadRequest(new { message = "Bad semester parameters passed!" });
                 }
             }
 
@@ -69,7 +69,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
         {
             if (!this.Validator.ValidateId(id) || !this.Validator.ValidateId(semesterId))
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             var affectedRows = this.service.DeleteStudentSemester(id, semesterId);
@@ -84,7 +84,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 || !this.Validator.ValidateObject(model)
                 || !this.Validator.ValidateId(model.Id))
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             var affectedRows = this.service.AddStudentSemester(id, model);
@@ -100,7 +100,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 || !this.Validator.ValidateId(model.DisciplineId)
                 || !this.Validator.ValidateScore(model.Score))
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             var affectedRows = this.service.AddStudentDisciplineScore(id, model);
@@ -116,7 +116,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 || !this.Validator.ValidateId(model.DisciplineId)
                 || !this.Validator.ValidateScore(model.Score))
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             var affectedRows = this.service.EditStudentDisciplineScore(id, model);
@@ -131,7 +131,7 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 || !this.Validator.ValidateObject(model)
                 || !this.Validator.ValidateId(model.DisciplineId))
             {
-                return BadRequest(new { message = "Bad discipline parameters passed!" });
+                return BadRequest(new { message = "Bad parameters passed!" });
             }
 
             var affectedRows = this.service.DeleteStudentDisciplineScore(id, model);
