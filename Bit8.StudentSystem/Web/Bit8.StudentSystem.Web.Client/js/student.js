@@ -149,7 +149,7 @@
     function getScoreInput(disciplineId, score) {
         let scoreInput = "<form id='scoreForm-" + disciplineId + "' class='scoreForm inline'>";
         scoreInput += "<label for='disciplineScore" + disciplineId + "'>Score: </label>"
-        scoreInput += "<input type='number' id='disciplineScore" + disciplineId + "' value='" + score + "' required/>";
+        scoreInput += "<input type='number' id='disciplineScore" + disciplineId + "' value='" + score + "' min='2' max='6' required/>";
         let actionButton = "";
         if (score == null) {
             actionButton += '<input id="addDisciplineScore' + disciplineId + '" type="submit" value="Save">';

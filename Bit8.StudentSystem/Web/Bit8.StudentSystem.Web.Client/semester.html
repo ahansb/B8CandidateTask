@@ -28,19 +28,19 @@
         <label for="idInput">Id: </label>
         <input id="idInput" type="number" readonly>
         <label for="nameInput">Name: </label>
-        <input id="nameInput" type="text" required>
+        <input id="nameInput" type="text" maxlength="45" required>
         <label for="startDateInput">Start Date: </label>
         <input id="startDateInput" type="date" required>
-        <label for="endDateInput">startDateInput: </label>
+        <label for="endDateInput">End date: </label>
         <input id="endDateInput" type="date" required>
         <input id="saveEdittedDiscipline" type="submit" value="Save">
     </form>
     <div class="margin-top margin-bottom">Disciplines</div>
     <form id="disciplineForm">
         <label for="disciplineNameInput" >Discipline name: </label>
-        <input id="disciplineNameInput" type="text" required>
+        <input id="disciplineNameInput" type="text" maxlength="45" required>
         <label for="professorNameInput">Professor name: </label>
-        <input id="professorNameInput" type="text" required>
+        <input id="professorNameInput" type="text" maxlength="45" required>
         <input id="saveCreatedDiscipline" type="submit" value="Add">
     </form>
     <ul id="disciplinesList">

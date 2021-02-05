@@ -26,7 +26,7 @@
     <h3>You are adding a semester</h3>
     <form id="semesterForm">
         <label for="nameInput" >Name: </label>
-        <input id="nameInput" type="text" required>
+        <input id="nameInput" type="text" maxlength="45" required>
         <label for="startDateInput">Start Date: </label>
         <input id="startDateInput" type="date" required>
         <label for="endDateInput">End Date: </label>
@@ -36,9 +36,9 @@
     <br>
     <form id="disciplineForm">
         <label for="disciplineNameInput" >Discipline name: </label>
-        <input id="disciplineNameInput" type="text" required>
+        <input id="disciplineNameInput" type="text" maxlength="45" required>
         <label for="professorNameInput">Professor name: </label>
-        <input id="professorNameInput" type="text" required>
+        <input id="professorNameInput" type="text" maxlength="45" required>
         <input id="addDiscipline" type="submit" value="Add discipline to semester">
     </form>
     <ul id="createdDisciplinesForSemester">
