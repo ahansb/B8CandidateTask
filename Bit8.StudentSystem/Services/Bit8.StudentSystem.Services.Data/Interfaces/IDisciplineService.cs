@@ -10,7 +10,7 @@ namespace Bit8.StudentSystem.Services.Data.Interfaces
         Discipline GetById(int id);
         int Edit(int id, string professorName);
         int Create(DisciplineCreateModel model);
-        bool Delete(int id);
+        int Delete(int id);
 
     }
 }

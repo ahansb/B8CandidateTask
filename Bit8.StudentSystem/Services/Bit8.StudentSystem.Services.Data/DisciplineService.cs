@@ -39,9 +39,9 @@ namespace Bit8.StudentSystem.Services.Data
             return affectedRows;
         }
 
-        public bool Delete(int id)
+        public int Delete(int id)
         {
-            return this.repository.Delete(id) == 1;
+            return this.repository.Delete(id);
         }
     }
 }

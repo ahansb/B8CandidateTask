@@ -73,14 +73,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad parameters passed!" });
             }
 
-            if (this.disciplineService.Delete(id))
-            {
-                return Ok(new { message = "Successfully deleted." });
-            }
-            else
-            {
-                return BadRequest(new { message = "Unsuccessful delete!" });
-            }
+            var affectedRows = this.disciplineService.Delete(id);
+            return this.BuildNonQueryResponse(affectedRows);
         }
     }
 }

@@ -285,10 +285,9 @@ namespace Bit8.StudentSystem.Data.Repository
                     connection.Open();
                     affectedRows = command.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
-                    throw;
+                    this.Log(this.GetExceptionText(ex));
                 }
             }
 

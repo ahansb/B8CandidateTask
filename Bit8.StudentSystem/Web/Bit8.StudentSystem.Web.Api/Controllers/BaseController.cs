@@ -12,6 +12,18 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
 {
     public abstract class BaseController : ControllerBase
     {
-        public ValidationHelper Validator { get { return new ValidationHelper(); } }
+        protected ValidationHelper Validator { get { return new ValidationHelper(); } }
+
+        protected IActionResult BuildNonQueryResponse(int affectedRows)
+        {
+            if (affectedRows == 0)
+            {
+                return BadRequest(new { message = "No rows were affected!" });
+            }
+            else
+            {
+                return Ok(new { message = "Operation succesful." });
+            }
+        }
     }
 }

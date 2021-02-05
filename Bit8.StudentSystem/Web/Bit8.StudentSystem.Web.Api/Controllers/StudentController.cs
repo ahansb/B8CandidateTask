@@ -85,8 +85,8 @@ namespace Bit8.StudentSystem.Web.Api.Controllers
                 return BadRequest(new { message = "Bad discipline parameters passed!" });
             }
 
-            this.service.DeleteStudentSemester(id, semesterId);
-            return Ok(new { message = "Successfully deleted." });
+            var affectedRows = this.service.DeleteStudentSemester(id, semesterId);
+            return this.BuildNonQueryResponse(affectedRows);
         }
 
         // POST api/<StudentController>/5/semester
