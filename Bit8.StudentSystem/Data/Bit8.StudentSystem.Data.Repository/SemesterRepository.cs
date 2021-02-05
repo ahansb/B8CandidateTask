@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Bit8.StudentSystem.Data.Interfaces;
 using Bit8.StudentSystem.Data.Repository.Interfaces;
@@ -17,64 +18,63 @@ namespace Bit8.StudentSystem.Data.Repository
         {
         }
 
-        //TODO: 1 query
         public ICollection<Semester> All()
         {
-            ICollection<Semester> semesters = new List<Semester>();
-
+            var semesters = new List<Semester>();
             using (var connection = this.Context.Connection)
             {
-                var statement = $"SELECT * FROM {SemesterTableName};";
+                var statement = @"SELECT s.*, d.Id as DisciplineId, d.DisciplineName, d.ProfessorName FROM bit8studentsystem.semester s
+LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
                 var command = new MySqlCommand(statement, connection);
-
                 try
                 {
                     connection.Open();
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        var semester = this.MapReaderToSemester(reader);
-                        semesters.Add(semester);
+                        var semesterId = (int) reader["Id"];
+                        var semester = semesters.Where(s => s.Id == semesterId).FirstOrDefault();
+                        if (semester == null)
+                        {
+                            var readerSemester = new Semester()
+                            {
+                                Id = semesterId,
+                                Name = reader["Name"].ToString(),
+                                StartDate = (DateTime) reader["StartDate"],
+                                EndDate = (DateTime) reader["EndDate"],
+                                Disciplines = new List<Discipline>()
+                            };
+
+                            semesters.Add(readerSemester);
+                            semester = semesters.Last();
+                        }
+
+                        if (reader["DisciplineId"] != DBNull.Value)
+                        {
+                            var disciplineId = (int) reader["DisciplineId"];
+                            var discipline = semester.Disciplines.Where(d => d.Id == disciplineId).FirstOrDefault();
+                            if (discipline == null)
+                            {
+                                var readerDiscipline = new Discipline()
+                                {
+                                    Id = disciplineId,
+                                    DisciplineName = reader["DisciplineName"].ToString(),
+                                    ProfessorName = reader["ProfessorName"].ToString(),
+                                    SemesterId = semesterId
+                                };
+
+                                semester.Disciplines.Add(readerDiscipline);
+                            }
+                        }
                     }
 
                     reader.Close();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                     throw;
                 }
-            }
-
-            foreach (var semester in semesters)
-            {
-                List<Discipline> disciplines = new List<Discipline>();
-                using (var connection = this.Context.Connection)
-                {
-                    var disciplineStatement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
-                    var command = new MySqlCommand(disciplineStatement, connection);
-
-
-                    try
-                    {
-                        connection.Open();
-                        var reader = command.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            var discipline = this.MapReaderToDiscipline(reader);
-                            disciplines.Add(discipline);
-                        }
-
-                        reader.Close();
-                    }
-                    catch (Exception)
-                    {
-
-                        throw;
-                    }
-                }
-
-                semester.Disciplines = disciplines;
             }
 
             return semesters;
@@ -83,10 +83,10 @@ namespace Bit8.StudentSystem.Data.Repository
         //TODO: 1 query
         public Semester GetById(int id)
         {
-            Semester semester = new Semester();
+            var semester = new Semester();
             using (var connection = this.Context.Connection)
             {
-                var statement = $"SELECT * FROM {SemesterTableName} WHERE Id = {id};";
+                var statement = $"SELECT s.*, d.Id as DisciplineId, d.DisciplineName, d.ProfessorName FROM bit8studentsystem.semester s LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id WHERE s.Id = {id};";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -94,44 +94,93 @@ namespace Bit8.StudentSystem.Data.Repository
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        semester = this.MapReaderToSemester(reader);
+                        if (semester.Id == default(int))
+                        {
+                            semester.Id = (int) reader["Id"];
+                            semester.Name = reader["Name"].ToString();
+                            semester.StartDate = (DateTime) reader["StartDate"];
+                            semester.EndDate = (DateTime) reader["EndDate"];
+                            semester.Disciplines = new List<Discipline>();
+                        }
+
+                        if (reader["DisciplineId"] != DBNull.Value)
+                        {
+                            var disciplineId = (int) reader["DisciplineId"];
+                            var discipline = semester.Disciplines.Where(d => d.Id == disciplineId).FirstOrDefault();
+                            if (discipline == null)
+                            {
+                                var readerDiscipline = new Discipline()
+                                {
+                                    Id = disciplineId,
+                                    DisciplineName = reader["DisciplineName"].ToString(),
+                                    ProfessorName = reader["ProfessorName"].ToString(),
+                                    SemesterId = semester.Id
+                                };
+
+                                semester.Disciplines.Add(readerDiscipline);
+                            }
+                        }
                     }
 
                     reader.Close();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                     throw;
                 }
             }
 
-            List<Discipline> disciplines = new List<Discipline>();
-            using (var connection = this.Context.Connection)
-            {
-                var statement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
-                var command = new MySqlCommand(statement, connection);
-                try
-                {
-                    connection.Open();
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        var discipline = this.MapReaderToDiscipline(reader);
-                        disciplines.Add(discipline);
-                    }
-
-                    reader.Close();
-                }
-                catch (Exception ex)
-                {
-
-                    throw;
-                }
-            }
-
-            semester.Disciplines = disciplines;
             return semester;
+            //Semester semester = new Semester();
+            //using (var connection = this.Context.Connection)
+            //{
+            //    var statement = $"SELECT * FROM {SemesterTableName} WHERE Id = {id};";
+            //    var command = new MySqlCommand(statement, connection);
+            //    try
+            //    {
+            //        connection.Open();
+            //        var reader = command.ExecuteReader();
+            //        while (reader.Read())
+            //        {
+            //            semester = this.MapReaderToSemester(reader);
+            //        }
+
+            //        reader.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+            //        throw;
+            //    }
+            //}
+
+            //List<Discipline> disciplines = new List<Discipline>();
+            //using (var connection = this.Context.Connection)
+            //{
+            //    var statement = $"SELECT * FROM {DisciplineTableName} WHERE SemesterId = {semester.Id};";
+            //    var command = new MySqlCommand(statement, connection);
+            //    try
+            //    {
+            //        connection.Open();
+            //        var reader = command.ExecuteReader();
+            //        while (reader.Read())
+            //        {
+            //            var discipline = this.MapReaderToDiscipline(reader);
+            //            disciplines.Add(discipline);
+            //        }
+
+            //        reader.Close();
+            //    }
+            //    catch (Exception ex)
+            //    {
+
+            //        throw;
+            //    }
+            //}
+
+            //semester.Disciplines = disciplines;
+            //return semester;
         }
 
         public int Add(Semester semester)
