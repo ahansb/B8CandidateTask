@@ -43,7 +43,7 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public ICollection<Student> All()
         {
-            ICollection<Student> students = new List<Student>();
+            var students = new List<Student>();
             using (var connection = this.Context.Connection)
             {
                 var statement = this.GetSelectStatement();

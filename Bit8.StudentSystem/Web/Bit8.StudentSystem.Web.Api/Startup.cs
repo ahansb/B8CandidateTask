@@ -32,10 +32,12 @@ namespace Bit8.StudentSystem.Web.Api
             services.AddScoped<IDisciplineRepository, DisciplineRepository>();
             services.AddScoped<ISemesterRepository, SemesterRepository>();
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<IAggregatedDataRepository, AggregatedDataRepository>();
 
             services.AddScoped<IDisciplineService, DisciplineService>();
             services.AddScoped<ISemesterService, SemesterService>();
             services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<IAggregatedDataService, AggreagatedDataService>();
 
             services.AddCors();
             services.AddControllers();
