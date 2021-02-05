@@ -12,12 +12,6 @@ namespace Bit8.StudentSystem.Data.Repository
 {
     public class StudentRepository : BaseRepository, IStudentRepository
     {
-        private const string DisciplineTableName = "bit8studentsystem.discipline";
-        private const string SemesterTableName = "bit8studentsystem.semester";
-        private const string StudentTableName = "bit8studentsystem.student";
-        private const string StudentSemesterTableName = "bit8studentsystem.studentsemester";
-        private const string ScoreTableName = "bit8studentsystem.score";
-
         private const string StudentIdText = "StudentId";
         private const string StudentNameText = "StudenName";
         private const string StudentSurnameText = "StudentSurname";
@@ -34,8 +28,6 @@ namespace Bit8.StudentSystem.Data.Repository
         private const string DisciplineSemesterIdText = "DisciplineSemesterId";
 
         private const string ScoreText = "Score";
-        private const int ScoreColumnIndex = 12;
-
 
         public StudentRepository(IApplicationDbContext dbContext) : base(dbContext)
         {
@@ -198,11 +190,11 @@ namespace Bit8.StudentSystem.Data.Repository
 
         public int Add(StudentCreateModel student)
         {
-            var affectedRows = 0; 
+            var affectedRows = 0;
             int idOfStudent = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"INSERT INTO {StudentTableName}(`Name`,`Surname`,`DOB`)VALUES(@Name,@Surname,@DOB);SELECT Id FROM {StudentTableName} WHERE Id = LAST_INSERT_ID();";
+                var statement = $"INSERT INTO {studentTableName}(`Name`,`Surname`,`DOB`)VALUES(@Name,@Surname,@DOB);SELECT Id FROM {studentTableName} WHERE Id = LAST_INSERT_ID();";
                 var command = new MySqlCommand(statement, connection);
 
                 command.Parameters.AddWithValue("Name", student.Name);
@@ -230,7 +222,7 @@ namespace Bit8.StudentSystem.Data.Repository
             {
                 using (var connection = this.Context.Connection)
                 {
-                    var statement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ";
+                    var statement = $"INSERT INTO  {studentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ";
                     var command = new MySqlCommand(statement, connection);
 
                     for (int i = 0; i < student.Semesters.Count; i++)
@@ -275,7 +267,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"DELETE FROM {StudentSemesterTableName} WHERE StudentId={id} AND SemesterId={semesterId};";
+                var statement = $"DELETE FROM {studentSemesterTableName} WHERE StudentId={id} AND SemesterId={semesterId};";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -301,7 +293,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"INSERT INTO  {StudentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ({id}, {semesterId});";
+                var statement = $"INSERT INTO  {studentSemesterTableName} (`StudentId`,`SemesterId`) VALUES ({id}, {semesterId});";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -327,7 +319,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"INSERT INTO  {ScoreTableName} (`StudentId`,`DisciplineId`,`Score`) VALUES ({id}, {disciplineId}, {score});";
+                var statement = $"INSERT INTO  {scoreTableName} (`StudentId`,`DisciplineId`,`Score`) VALUES ({id}, {disciplineId}, {score});";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -353,7 +345,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"UPDATE {ScoreTableName} SET Score = {score} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
+                var statement = $"UPDATE {scoreTableName} SET Score = {score} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -379,7 +371,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"DELETE FROM {ScoreTableName} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
+                var statement = $"DELETE FROM {scoreTableName} WHERE StudentId = {id} AND DisciplineId = {disciplineId};";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -401,8 +393,8 @@ namespace Bit8.StudentSystem.Data.Repository
             var statementSecondLine = $"sem.Id as {SemesterIdText}, sem.Name as {SemesterNameText}, sem.StartDate as {SemesterStartDateText}, sem.EndDate as {SemesterEndDateText},";
             var statementThirdLine = $"d.Id as {DisciplineIdText}, d.DisciplineName, d.ProfessorName as {DisciplineProfessorNameText}, d.SemesterId as {DisciplineSemesterIdText},";
             var statementFourthLine = $"sc.Score ";
-            var statementFifthLine = $"FROM {StudentTableName} st LEFT JOIN {StudentSemesterTableName} ss ON ss.StudentId = st.Id LEFT JOIN {SemesterTableName} sem ON sem.Id = ss.SemesterId ";
-            var statementSixthLine = $"LEFT JOIN {DisciplineTableName} d ON d.SemesterId = sem.Id LEFT JOIN {ScoreTableName} sc ON sc.StudentId = st.Id AND sc.DisciplineId = d.Id ";
+            var statementFifthLine = $"FROM {studentTableName} st LEFT JOIN {studentSemesterTableName} ss ON ss.StudentId = st.Id LEFT JOIN {semesterTableName} sem ON sem.Id = ss.SemesterId ";
+            var statementSixthLine = $"LEFT JOIN {disciplineTableName} d ON d.SemesterId = sem.Id LEFT JOIN {scoreTableName} sc ON sc.StudentId = st.Id AND sc.DisciplineId = d.Id ";
 
             var statement = $"{statementLineOne}{statementSecondLine}{statementThirdLine}{statementFourthLine}{statementFifthLine}{statementSixthLine}";
             var statementOrderClause = " ORDER BY st.Id, sem.Id, d.Id;";

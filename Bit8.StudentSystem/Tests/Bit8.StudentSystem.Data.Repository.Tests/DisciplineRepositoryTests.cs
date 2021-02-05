@@ -64,7 +64,8 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
             Discipline dbDiscipline = null;
             using (var connection = this.applicationDbContext.Connection)
             {
-                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM bit8studentsystem.discipline d LEFT JOIN bit8studentsystem.semester s ON s.Id = d.SemesterId WHERE d.Id = {id};";
+                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {applicationDbContext.GetDatabaseName()}.discipline d";
+                   statement += $"{statement} LEFT JOIN {applicationDbContext.GetDatabaseName()}.semester s ON s.Id = d.SemesterId WHERE d.Id = {id};";
                 var command = new MySqlCommand(statement, connection);
 
                 connection.Open();
@@ -123,6 +124,58 @@ namespace Bit8.StudentSystem.Data.Repository.Tests
         {
             var discipline = this.repository.GetById(id);
             Assert.Null(discipline);
+        }
+
+        [Fact]
+        public void Add_ShouldAdd_Discipline()
+        {
+            var addedDiscipline = new DisciplineCreateModel() { DisciplineName = "NewDiscipline", ProfessorName = "Professore", SemesterId = 1 };
+            var affectedRows = this.repository.Add(addedDiscipline);
+            Assert.Equal(1, affectedRows);
+            long count = 0;
+            using (var connection = this.applicationDbContext.Connection)
+            {
+                var statement = $"SELECT  COUNT(*) as Count  FROM {applicationDbContext.GetDatabaseName()}.discipline;";
+                var command = new MySqlCommand(statement, connection);
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+ 
+                while (reader.Read())
+                {
+                    count = (long) reader["Count"];
+                }
+
+                reader.Close();
+            }
+
+            Assert.Equal(13, count);
+        }
+
+        [Fact]
+        public void Add_ShouldAdd_CorrectDiscipline()
+        {
+            var addedDiscipline = new DisciplineCreateModel() { DisciplineName = "NewDiscipline", ProfessorName = "Professore", SemesterId = 1 };
+            var affectedRows = this.repository.Add(addedDiscipline);
+            Assert.Equal(1, affectedRows);
+            long count = 0;
+            using (var connection = this.applicationDbContext.Connection)
+            {
+                var statement = $"SELECT  COUNT(*) as Count  FROM {applicationDbContext.GetDatabaseName()}.discipline;";
+                var command = new MySqlCommand(statement, connection);
+
+                connection.Open();
+                var reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    count = (long) reader["Count"];
+                }
+
+                reader.Close();
+            }
+
+            Assert.Equal(13, count);
         }
     }
 }

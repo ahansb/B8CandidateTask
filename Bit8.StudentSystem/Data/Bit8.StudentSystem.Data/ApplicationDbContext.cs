@@ -48,7 +48,7 @@ namespace Bit8.StudentSystem.Data
                 statement = File.ReadAllText(path);
             }
 
-            statement = statement.Replace("`bit8studentsystem`", $"`{this.GetDatabaseName(this.connectionString)}`");
+            statement = statement.Replace("`bit8studentsystem`", $"`{this.GetDatabaseName()}`");
 
             using (var connection = this.Connection)
             {
@@ -61,7 +61,7 @@ namespace Bit8.StudentSystem.Data
 
         private void DropDbIfExistsAndRecreate()
         {
-            var dbName = this.GetDatabaseName(this.connectionString);
+            var dbName = this.GetDatabaseName();
             var masterConnectionString = this.connectionString.Replace($"Database={dbName};", string.Empty);
 
             using (var connection = new MySqlConnection(masterConnectionString))
@@ -79,11 +79,11 @@ namespace Bit8.StudentSystem.Data
             }
         }
 
-        private string GetDatabaseName(string connectionString)
+        public string GetDatabaseName()
         {
             var databaseString = "Database=";
-            var indexOfDbNameStart = connectionString.IndexOf(databaseString) + databaseString.Length;
-            var indexOfDbNameEnd = connectionString.IndexOf(';', indexOfDbNameStart);
+            var indexOfDbNameStart = this.connectionString.IndexOf(databaseString) + databaseString.Length;
+            var indexOfDbNameEnd = this.connectionString.IndexOf(';', indexOfDbNameStart);
             return connectionString.Substring(indexOfDbNameStart, indexOfDbNameEnd - indexOfDbNameStart);
         }
     }

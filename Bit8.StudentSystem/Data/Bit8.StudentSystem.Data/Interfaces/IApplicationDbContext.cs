@@ -10,5 +10,6 @@ namespace Bit8.StudentSystem.Data.Interfaces
     {
         MySqlConnection Connection { get; }
         void Initialize();
+        string GetDatabaseName();
     }
 }

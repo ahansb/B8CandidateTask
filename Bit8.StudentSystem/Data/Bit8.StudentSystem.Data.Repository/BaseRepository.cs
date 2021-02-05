@@ -9,6 +9,11 @@ namespace Bit8.StudentSystem.Data.Repository
     {
         private const string LogBasePath = @"..\..\";
         private readonly IApplicationDbContext context;
+        protected readonly string disciplineTableName;
+        protected readonly string semesterTableName;
+        protected readonly string studentTableName;
+        protected readonly string studentSemesterTableName;
+        protected readonly string scoreTableName;
 
         public BaseRepository(IApplicationDbContext dbContext)
         {
@@ -18,6 +23,12 @@ namespace Bit8.StudentSystem.Data.Repository
             }
 
             this.context = dbContext;
+
+            this.disciplineTableName = $"{this.Context.GetDatabaseName()}.discipline";
+            this.semesterTableName = $"{this.Context.GetDatabaseName()}.semester";
+            this.studentTableName = $"{this.Context.GetDatabaseName()}.student";
+            this.studentSemesterTableName = $"{this.Context.GetDatabaseName()}.studentsemester";
+            this.scoreTableName = $"{this.Context.GetDatabaseName()}.score";
         }
 
         public IApplicationDbContext Context

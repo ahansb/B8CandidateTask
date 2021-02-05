@@ -12,8 +12,6 @@ namespace Bit8.StudentSystem.Data.Repository
 {
     public class SemesterRepository : BaseRepository, ISemesterRepository
     {
-        private const string DisciplineTableName = "bit8studentsystem.discipline";
-        private const string SemesterTableName = "bit8studentsystem.semester";
         public SemesterRepository(IApplicationDbContext dbContext) : base(dbContext)
         {
         }
@@ -23,8 +21,8 @@ namespace Bit8.StudentSystem.Data.Repository
             var semesters = new List<Semester>();
             using (var connection = this.Context.Connection)
             {
-                var statement = @"SELECT s.*, d.Id as DisciplineId, d.DisciplineName, d.ProfessorName FROM bit8studentsystem.semester s
-LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
+                var statement = $"SELECT s.*, d.Id as DisciplineId, d.DisciplineName, d.ProfessorName FROM {this.semesterTableName} s ";
+                statement = $"{statement} LEFT JOIN {this.disciplineTableName} d ON d.SemesterId = s.Id;";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -84,7 +82,7 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             var semester = new Semester();
             using (var connection = this.Context.Connection)
             {
-                var statement = $"SELECT s.*, d.Id as DisciplineId, d.DisciplineName, d.ProfessorName FROM bit8studentsystem.semester s LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id WHERE s.Id = {id};";
+                var statement = $"SELECT s.*, d.Id as DisciplineId, d.DisciplineName, d.ProfessorName FROM {this.semesterTableName} s LEFT JOIN {this.disciplineTableName} d ON d.SemesterId = s.Id WHERE s.Id = {id};";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -137,7 +135,7 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             int idOfSemester = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"INSERT INTO {SemesterTableName}(`Name`,`StartDate`,`EndDate`)VALUES(@Name,@StartDate,@EndDate);SELECT Id FROM {SemesterTableName} WHERE Id = LAST_INSERT_ID();";
+                var statement = $"INSERT INTO {semesterTableName}(`Name`,`StartDate`,`EndDate`)VALUES(@Name,@StartDate,@EndDate);SELECT Id FROM {semesterTableName} WHERE Id = LAST_INSERT_ID();";
                 var command = new MySqlCommand(statement, connection);
 
                 command.Parameters.AddWithValue("Name", semester.Name);
@@ -163,7 +161,7 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             {
                 using (var connection = this.Context.Connection)
                 {
-                    var statement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ";
+                    var statement = $"INSERT INTO  {disciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES ";
                     var command = new MySqlCommand(statement, connection);
 
                     for (int i = 0; i < semester.Disciplines.Count; i++)
@@ -204,7 +202,7 @@ LEFT JOIN bit8studentsystem.discipline d ON d.SemesterId = s.Id;";
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"UPDATE {SemesterTableName} SET Name = @Name, StartDate = @StartDate, EndDate = @EndDate WHERE Id = {id}";
+                var statement = $"UPDATE {semesterTableName} SET Name = @Name, StartDate = @StartDate, EndDate = @EndDate WHERE Id = {id}";
                 var command = new MySqlCommand(statement, connection);
 
                 command.Parameters.AddWithValue("Name", semester.Name);

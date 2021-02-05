@@ -11,9 +11,6 @@ namespace Bit8.StudentSystem.Data.Repository
 {
     public class DisciplineRepository : BaseRepository, IDisciplineRepository
     {
-        private const string DisciplineTableName = "bit8studentsystem.discipline";
-        private const string SemesterTableName = "bit8studentsystem.semester";
-
         public DisciplineRepository(IApplicationDbContext dbContext) : base(dbContext)
         {
         }
@@ -23,7 +20,7 @@ namespace Bit8.StudentSystem.Data.Repository
             ICollection<Discipline> disciplines = new List<Discipline>();
             using (var connection = this.Context.Connection)
             {
-                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {DisciplineTableName} d LEFT JOIN {SemesterTableName} s ON s.Id = d.SemesterId;";
+                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {disciplineTableName} d LEFT JOIN {semesterTableName} s ON s.Id = d.SemesterId;";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -52,7 +49,7 @@ namespace Bit8.StudentSystem.Data.Repository
             Discipline discipline = null;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {DisciplineTableName} d LEFT JOIN {SemesterTableName} s ON s.Id = d.SemesterId WHERE d.Id = {id};";
+                var statement = $"SELECT  d.*, s.Name, s.StartDate, s.EndDate  FROM {disciplineTableName} d LEFT JOIN {semesterTableName} s ON s.Id = d.SemesterId WHERE d.Id = {id};";
                 var command = new MySqlCommand(statement, connection);
                 try
                 {
@@ -79,7 +76,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"INSERT INTO  {DisciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES (@DisciplineName, @ProfessorName, @SemesterId);";
+                var statement = $"INSERT INTO  {disciplineTableName} (`DisciplineName`,`ProfessorName`,`SemesterId`) VALUES (@DisciplineName, @ProfessorName, @SemesterId);";
                 var command = new MySqlCommand(statement, connection);
 
                 command.Parameters.AddWithValue("DisciplineName", discipline.DisciplineName);
@@ -104,7 +101,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"UPDATE {DisciplineTableName} SET ProfessorName = @ProfessorName WHERE Id = {id}";
+                var statement = $"UPDATE {disciplineTableName} SET ProfessorName = @ProfessorName WHERE Id = {id}";
                 var command = new MySqlCommand(statement, connection);
                 command.Parameters.AddWithValue("ProfessorName",professorName);
 
@@ -127,7 +124,7 @@ namespace Bit8.StudentSystem.Data.Repository
             var affectedRows = 0;
             using (var connection = this.Context.Connection)
             {
-                var statement = $"DELETE FROM {DisciplineTableName} WHERE Id={id};";
+                var statement = $"DELETE FROM {disciplineTableName} WHERE Id={id};";
                 var command = new MySqlCommand(statement, connection);
 
                 try
